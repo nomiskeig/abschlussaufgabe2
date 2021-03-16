@@ -14,6 +14,7 @@ public abstract class Command {
     public Game getGame() {
         return game;
     }
+    
 
     public abstract String getPattern();
 
@@ -22,7 +23,6 @@ public abstract class Command {
     public static Command[] getCommands(Game game) {
         return new Command[] {new MoveCommand(game), new ExtinguishCommand(game), new RefillCommand(game),
             new BuyFireEngineCommand(game), new FireToRollCommand(game), new TurnCommand(game), new ResetCommand(game),
-            new ShowBoardCommand(game), new ShowBoardCommand(game), new ShowFieldCommand(game),
-            new ShowPlayerCommand(game), new QuitCommand(game)};
+            new ShowBoardCommand(game), new ShowFieldCommand(game), new ShowPlayerCommand(game), new QuitCommand(game)};
     }
 }

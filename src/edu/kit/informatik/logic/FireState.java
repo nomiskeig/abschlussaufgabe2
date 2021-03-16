@@ -1,7 +1,7 @@
 package edu.kit.informatik.logic;
 
 public enum FireState {
-    DRY("d"), WET("w"), LIGHT_FIRE("+"), STRONG_FIRE("*");
+    DRY("d"), WET("w"), LIGHT_FIRE("+"), STRONG_FIRE("*"), NON_FIRE_FIELD("x");
 
 
     private String displayName;

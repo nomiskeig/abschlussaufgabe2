@@ -1,4 +1,4 @@
-package edu.kit.informatik.logic;
+package edu.kit.informatik.commands;
 
 public class ParseException extends Exception {
     /**
@@ -10,6 +10,7 @@ public class ParseException extends Exception {
 
     /**
      * The constructor.
+     *
      * @param s the message of the exception.
      */
     public ParseException(String s) {

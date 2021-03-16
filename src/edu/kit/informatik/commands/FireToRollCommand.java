@@ -4,13 +4,15 @@ import edu.kit.informatik.logic.Game;
 import edu.kit.informatik.ui.Result;
 
 public class FireToRollCommand extends Command {
+    private static final String BASE_REGEX = "^fire-to-roll.*$";
+
     public FireToRollCommand(Game game) {
         super(game);
     }
 
     @Override
     public String getPattern() {
-        return null;
+        return BASE_REGEX;
     }
 
     @Override
