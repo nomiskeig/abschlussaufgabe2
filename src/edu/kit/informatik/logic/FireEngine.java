@@ -4,6 +4,7 @@ public class FireEngine {
 
     public static final String INITIAL_TRUCK_REGEX = "^((A0)|(B0)|(C0)|(D0))$";
 
+
     private static final int INITIAL_ACTIONS = 3;
     private static final int INITIAL_WATER = 3;
 
@@ -73,6 +74,19 @@ public class FireEngine {
     public void madeAction() {
         this.actions = this.actions - 1;
         this.canMove = false;
+    }
+
+    public void moved() {
+        this.actions -= 1;
+    }
+
+    public void refill() {
+        this.water = 3;
+        this.actions -= 1;
+    }
+
+    public boolean enoughActionPoints() {
+        return this.actions >= 1;
     }
 
     public void extinguished() {

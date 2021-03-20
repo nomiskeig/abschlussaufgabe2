@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class BuyFireEngineCommand extends Command {
     private static final String BASE_REGEX = "^buy-fire-engine.*";
 
-    private static final String EXACT_REGEX = "^buy-fire-engine (-?[0-9]+) (-?[0-9]+)$";
+    private static final String EXACT_REGEX = "^buy-fire-engine " + Command.DOUBLE_INDEX_REGEX + "$";
 
     public BuyFireEngineCommand(Game game) {
         super(game);

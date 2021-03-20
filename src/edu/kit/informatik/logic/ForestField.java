@@ -1,5 +1,7 @@
 package edu.kit.informatik.logic;
 
+import edu.kit.informatik.resources.Errors;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,7 +33,18 @@ public class ForestField implements Field {
 
     @Override
     public void placeFireEngine(FireEngine fireEngine) throws GameException {
+        if (this.fireState == FireState.LIGHT_FIRE) {
+            throw new GameException(Errors.NO_ENGINE_ON_LIGHT);
+        }
+        if (this.fireState == FireState.STRONG_FIRE) {
+            throw new GameException(Errors.NO_ENGINE_ON_STRONG);
+        }
         this.fireEngines.add(fireEngine);
+    }
+
+    @Override
+    public void removeFireEngine(FireEngine fireEngine) {
+        this.fireEngines.remove(fireEngine);
     }
 
     @Override
@@ -43,6 +56,16 @@ public class ForestField implements Field {
             }
         }
         return fireEnginesOfPlayer;
+    }
+
+    @Override
+    public boolean isPond() {
+        return false;
+    }
+
+    @Override
+    public boolean isFireStation(Player player) {
+        return false;
     }
 
 

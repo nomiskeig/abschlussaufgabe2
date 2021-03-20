@@ -1,7 +1,7 @@
 package edu.kit.informatik.logic;
 
 public interface FireBreaker {
-    String move(String id, int row, int column) throws GameException;
+    void move(String id, int row, int column) throws GameException;
 
     String extinguish(String id, int row, int column) throws GameException;
 

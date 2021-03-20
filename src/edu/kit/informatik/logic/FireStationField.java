@@ -9,8 +9,11 @@ public class FireStationField implements Field {
 
     private final String id;
 
+    private final Player owner;
+
     public FireStationField(String id) {
         this.id = id;
+        this.owner = Player.getByName(id);
     }
 
     @Override
@@ -30,8 +33,23 @@ public class FireStationField implements Field {
     }
 
     @Override
+    public void removeFireEngine(FireEngine fireEngine) {
+
+    }
+
+    @Override
     public Collection<FireEngine> getFireEngines(Player player) {
         return null;
+    }
+
+    @Override
+    public boolean isPond() {
+        return false;
+    }
+
+    @Override
+    public boolean isFireStation(Player player) {
+        return this.owner == player;
     }
 
     @Override

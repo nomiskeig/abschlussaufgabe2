@@ -43,4 +43,8 @@ public enum Player {
     public void setAmountOfFireEngines(int amountOfFireEngines) {
         this.amountOfFireEngines = amountOfFireEngines;
     }
+
+    public void addReputationPoint() {
+        this.reputationPoints += 1;
+    }
 }

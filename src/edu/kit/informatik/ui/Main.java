@@ -36,15 +36,15 @@ public class Main {
         Game game = new Game(board);
         Command[] commands = Command.getCommands(game);
         while (isRunning) {
-            executeCommand(commands);
+            executeCommand(commands, "");
         }
 
     }
 
-    //TODO: MAKE PRIVATE
-    public static void executeCommand(Command[] commands) {
+    //TODO: MAKE PRIVATE and make void and remove parameter
+    public static String executeCommand(Command[] commands, String input) {
         boolean found = false;
-        String input = Terminal.readLine();
+        //String input = Terminal.readLine();
         for (Command command : commands) {
             if (input.matches(command.getPattern())) {
                 found = true;
@@ -52,15 +52,17 @@ public class Main {
                 switch (result.getType()) {
                     case SUCCESS:
                         Terminal.printLine(result.getMessage());
-                        break;
+                        return result.getMessage();
+                    //break;
                     case FAILURE:
                         Terminal.printError(result.getMessage());
-                        break;
+                        return result.getMessage();
+                    //break;
                     case QUIT:
                         isRunning = false;
                         break;
                     default:
-                        Terminal.printError("error");
+                        Terminal.printError("Error");
                         break;
                 }
             }
@@ -68,7 +70,10 @@ public class Main {
         }
         if (!found) {
             Terminal.printError(Errors.NO_SUCH_COMMAND);
+            return Errors.NO_SUCH_COMMAND;
         }
+        //TODO: REMOVE THIS
+        return "";
     }
 
     public static Board parseArguments(String args) throws ParseException {

@@ -19,4 +19,5 @@ Errors
 
 - [ ] test extinguish command
 
-
+- [ ] add reputation only for slight and strong burning forest
+- [ ] check refill only when adjacent

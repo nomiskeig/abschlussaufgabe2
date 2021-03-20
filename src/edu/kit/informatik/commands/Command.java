@@ -4,6 +4,11 @@ import edu.kit.informatik.logic.Game;
 import edu.kit.informatik.ui.Result;
 
 public abstract class Command {
+    public static final String INDEX_REGEX = "(-?[0-9]+)";
+
+    public static final String DOUBLE_INDEX_REGEX = "(-?[0-9]+) (-?[0-9]+)";
+    public static final String ENGINE_REGEX = "([^\\s]+)";
+
 
     private Game game;
 
@@ -14,7 +19,7 @@ public abstract class Command {
     public Game getGame() {
         return game;
     }
-    
+
 
     public abstract String getPattern();
 

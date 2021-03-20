@@ -23,8 +23,23 @@ public class CoolingPondField implements Field {
     }
 
     @Override
+    public void removeFireEngine(FireEngine fireEngine) {
+
+    }
+
+    @Override
     public Collection<FireEngine> getFireEngines(Player player) {
         return null;
+    }
+
+    @Override
+    public boolean isPond() {
+        return true;
+    }
+
+    @Override
+    public boolean isFireStation(Player player) {
+        return false;
     }
 
     @Override

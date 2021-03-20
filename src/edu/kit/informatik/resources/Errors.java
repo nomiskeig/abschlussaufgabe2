@@ -47,7 +47,29 @@ public class Errors {
 
     public final static String NO_FIRE_ENGINE = "the currently active player does not own a fire engine with id %s.";
 
-    public final static String FIRE_ENGINE_NOT_NEARBY
-        = "the fire engine can not extinguish the field %s %s, because the fire engine is currently placed on field "
-        + "%s %s, which is not adjacent";
+    public final static String FIRE_ENGINE_NOT_NEARBY =
+        "the fire engine can not extinguish the field %s %s, because the fire engine is currently placed on field "
+            + "%s %s, which is not adjacent";
+
+    public final static String ALREADY_FULL
+        = "the fire engine with id %s can currently not refill, as it already has the maximum capacity of water.";
+
+    public final static String NO_ACTION_TO_REFILL
+        = "the fire engine with id %s has no actions left, this can currently not refill";
+
+    public final static String NOT_ADJACENT_REFILL =
+        "the engine is not adjacent to a pond or the fire station of the active player, thus the fire engine can "
+            + "not refill when on field %s %s";
+
+    public final static String NO_ENGINE_ON_LIGHT
+        = "the fire engine cannot be moved, because engines can't be moved to fields with light fire.";
+
+    public final static String NO_ENGINE_ON_STRONG
+        = "the fire engine cannot be moved, because engines can't be moved to fields with strong fire.";
+
+    public final static String ENGINE_CAN_NOT_STAY_ON_SAME_FIELD
+        = "fire engines can only move to fields other than their initial position.";
+
+    public final static String NO_PATH
+        = "there is no valid path from field %s %s to field %s %s, so the fire engine cannot move there.";
 }

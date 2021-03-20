@@ -21,43 +21,60 @@ public class Game implements FireBreaker {
 
 
     @Override
-    public String move(String id, int row, int column) {
-        return null;
+    public void move(String id, int row, int column) throws GameException {
+        this.board.validateFieldIndex(row, column);
+        FireEngine fe = this.board.getFireEngineOfPlayer(this.coordinator.getActivePlayer(), id);
+        int initialRow = fe.getRow();
+        int initialColumn = fe.getColumn();
+        if (initialRow == row && initialColumn == column) {
+            throw new GameException(Errors.ENGINE_CAN_NOT_STAY_ON_SAME_FIELD);
+        }
+        this.board.move(fe, initialRow, initialColumn, row, column, 2);
+        if (initialColumn == fe.getRow() && initialColumn == fe.getColumn()) {
+            throw new GameException(String.format(Errors.NO_PATH, initialRow, initialColumn, row, column));
+        }
+
     }
 
     @Override
     public String extinguish(String id, int row, int column) throws GameException {
         this.board.validateFieldIndex(row, column);
-        boolean foundEngine = false;
-        FireState newFireState = FireState.NON_FIRE_FIELD;
-        for (FireEngine fe : board.getFireEngines(this.coordinator.getActivePlayer())) {
-            if (fe.getId().equals(id)) {
-                foundEngine = true;
-                if (fe.getActions() < 1) {
-                    throw new GameException(Errors.ACTION_POINT_NEEDED_TO_EXTINGUISH);
-                }
-                if (fe.getWater() < 1) {
-                    throw new GameException(Errors.WATER_NEEDED_TO_EXTINGUISH);
-                }
-                if (row >= fe.getRow() - 1 && row <= fe.getRow() + 1 && column >= fe.getColumn() - 1
-                    && column <= fe.getColumn() + 1) {
-                    newFireState = this.board.extinguish(row, column);
-                    fe.extinguished();
-                } else {
-                    throw new GameException(
-                        String.format(Errors.FIRE_ENGINE_NOT_NEARBY, row, column, fe.getRow(), fe.getColumn()));
-                }
-            }
+        FireState newFireState;
+        FireEngine fe = this.board.getFireEngineOfPlayer(this.coordinator.getActivePlayer(), id);
+        if (fe.getActions() < 1) {
+            throw new GameException(Errors.ACTION_POINT_NEEDED_TO_EXTINGUISH);
         }
-        if (!foundEngine) {
-            throw new GameException(String.format(Errors.NO_FIRE_ENGINE, id));
+        if (fe.getWater() < 1) {
+            throw new GameException(Errors.WATER_NEEDED_TO_EXTINGUISH);
         }
-        return newFireState.getDisplayName();
+        if (board.isAdjacent(fe, row, column)) {
+            newFireState = this.board.extinguish(row, column);
+            fe.extinguished();
+            this.coordinator.getActivePlayer().addReputationPoint();
+        } else {
+            throw new GameException(
+                String.format(Errors.FIRE_ENGINE_NOT_NEARBY, row, column, fe.getRow(), fe.getColumn()));
+        }
+        return newFireState.getDisplayName() + "," + fe.getActions();
     }
 
+
     @Override
-    public int refill(String id) {
-        return 0;
+    public int refill(String id) throws GameException {
+        Player player = this.coordinator.getActivePlayer();
+        FireEngine fe = this.board.getFireEngineOfPlayer(this.coordinator.getActivePlayer(), id);
+        if (!fe.enoughActionPoints()) {
+            throw new GameException(String.format(Errors.NO_ACTION_TO_REFILL, id));
+        }
+        if (fe.getWater() == 3) {
+            throw new GameException(String.format(Errors.ALREADY_FULL, id));
+        }
+        if (this.board.isAdjacentToPond(fe, player) || this.board.isAdjacentToPond(fe, player)) {
+            fe.refill();
+        } else {
+            throw new GameException(String.format(Errors.NOT_ADJACENT_REFILL, fe.getRow(), fe.getColumn()));
+        }
+        return fe.getActions();
     }
 
     @Override
@@ -70,7 +87,7 @@ public class Game implements FireBreaker {
         }
         FireEngine newFireEngine = new FireEngine(activePlayer.getName() + activePlayer.getAmountOfFireEngines(), row,
             column);
-        board.placeFireEngine(row, column, newFireEngine, activePlayer);
+        board.placeFireEngine(newFireEngine, activePlayer);
         activePlayer.setReputationPoints(reputation - REPUTATION_TO_BUY_ENGINE);
         return activePlayer.getReputationPoints();
 
