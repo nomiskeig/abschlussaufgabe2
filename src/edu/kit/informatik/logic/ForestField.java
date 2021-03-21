@@ -3,7 +3,6 @@ package edu.kit.informatik.logic;
 import edu.kit.informatik.resources.Errors;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ForestField implements Field {
@@ -48,8 +47,8 @@ public class ForestField implements Field {
     }
 
     @Override
-    public Collection<FireEngine> getFireEngines(Player player) {
-        Collection<FireEngine> fireEnginesOfPlayer = new ArrayList<>();
+    public List<FireEngine> getFireEngines(Player player) {
+        List<FireEngine> fireEnginesOfPlayer = new ArrayList<>();
         for (FireEngine fe : this.fireEngines) {
             if (fe.getOwningPlayer() == player) {
                 fireEnginesOfPlayer.add(fe);
@@ -75,7 +74,7 @@ public class ForestField implements Field {
         result.append(this.fireState.getDisplayName());
         //TODO: sort engines
         for (FireEngine fe : fireEngines) {
-            result.append("," + fe.toString());
+            result.append("," + fe.getId());
         }
         return result.toString();
     }

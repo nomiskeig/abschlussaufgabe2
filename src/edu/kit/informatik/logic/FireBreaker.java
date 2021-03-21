@@ -17,5 +17,5 @@ public interface FireBreaker {
 
     String showField(int row, int column) throws GameException;
 
-    String showPlayer(String id) throws GameException;
+    String showPlayer() throws GameException;
 }

@@ -1,6 +1,6 @@
 package edu.kit.informatik.logic;
 
-public class FireEngine {
+public class FireEngine implements Comparable<FireEngine> {
 
     public static final String INITIAL_TRUCK_REGEX = "^((A0)|(B0)|(C0)|(D0))$";
 
@@ -71,9 +71,8 @@ public class FireEngine {
         this.column = column;
     }
 
-    public void madeAction() {
-        this.actions = this.actions - 1;
-        this.canMove = false;
+    public boolean canMove() {
+        return this.canMove;
     }
 
     public void moved() {
@@ -83,6 +82,7 @@ public class FireEngine {
     public void refill() {
         this.water = 3;
         this.actions -= 1;
+        this.canMove = false;
     }
 
     public boolean enoughActionPoints() {
@@ -95,8 +95,15 @@ public class FireEngine {
         this.canMove = false;
     }
 
+
+    @Override
+    public int compareTo(FireEngine o) {
+        return this.getId().compareTo(o.getId());
+    }
+
     @Override
     public String toString() {
-        return id;
+        return this.getId() + "," + this.getWater() + "," + this.getActions() + "," + this.getRow() + "," + this
+            .getColumn();
     }
 }

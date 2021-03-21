@@ -72,4 +72,12 @@ public class Errors {
 
     public final static String NO_PATH
         = "there is no valid path from field %s %s to field %s %s, so the fire engine cannot move there.";
+
+    public final static String ALREADY_MADE_ACTION =
+        "the fire engine with id %s can no longer move this turn because it already extinguished a field or "
+            + "refilled.";
+
+    public final static String FIRE_TO_ROLL_NEEDED
+        = "the fire-to-roll command has to be used at the start of each round before the first player of the round "
+        + "can do something";
 }

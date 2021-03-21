@@ -3,14 +3,14 @@ package edu.kit.informatik.logic;
 import edu.kit.informatik.resources.Errors;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class Board {
 
     private Field[][] board;
 
-    public Board(Field[][] fields) {
-        this.board = fields;
+    public Board(Field[][] board) {
+        this.board = board;
     }
 
     public String getFireRepresentation() {
@@ -26,7 +26,7 @@ public class Board {
                 result.append(",");
             }
             result = new StringBuilder(result.substring(0, result.length() - 1));
-            result.append(System.lineSeparator());
+            result.append("\n");
         }
         return result.substring(0, result.length() - 1);
     }
@@ -61,8 +61,6 @@ public class Board {
         } else {
             throw new GameException(String.format(Errors.MISSING_FIRE_STATION, row, column));
         }
-
-
     }
 
     public FireState extinguish(int row, int column) throws GameException {
@@ -142,7 +140,7 @@ public class Board {
 
     /**
      * Searches recursively for a path from the start to the goal field. Acts according to the move rules of the
-     * assignment. .
+     * assignment.
      *
      * @param fe             the fire engine to move.
      * @param fromRow        the row the move is performed from.
@@ -155,6 +153,10 @@ public class Board {
     public void move(FireEngine fe, int fromRow, int fromColumn, int toRow, int toColumn, int remainingSteps)
         throws GameException {
         Field newField;
+        // engine was already moved
+        if (fe.getRow() == toRow && fe.getColumn() == toColumn) {
+            return;
+        }
         // check if on right field
         if (fromRow == toRow && fromColumn == toColumn) {
             this.placeFireEngine(toRow, toColumn, fe);
@@ -162,18 +164,15 @@ public class Board {
             fe.setRow(toRow);
             fe.setColumn(toColumn);
             fe.moved();
-
+            return;
         }
-
         if (remainingSteps == 0) {
             return;
         }
+
         // check the four fields to which the engine can theoretically move in one step
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j = j + 2) {
-                if (i == 0 && j == 0) {
-                    break;
-                }
                 if (i != 0) {
                     j = 0;
                 }
@@ -182,17 +181,16 @@ public class Board {
                 int newColumn = fromColumn + j;
                 if (isValidFieldIndex(newRow, newColumn)) {
                     newField = this.board[newRow][newColumn];
-                    // this check (remainingSteps == 1) is required in order to get the correct error message
-                    if (remainingSteps == 1) {
+                    // this check is required in order to get the correct error message
+                    if (newRow == toRow && newColumn == toColumn) {
                         move(fe, newRow, newColumn, toRow, toColumn, remainingSteps - 1);
-                    } else if (remainingSteps > 1 && !(newField.getFireState() == FireState.NON_FIRE_FIELD
+                    } else if (!(newField.getFireState() == FireState.NON_FIRE_FIELD
                         || newField.getFireState() == FireState.STRONG_FIRE)) {
                         move(fe, newRow, newColumn, toRow, toColumn, remainingSteps - 1);
                     }
                 }
             }
         }
-
     }
 
     public FireEngine getFireEngineOfPlayer(Player player, String id) throws GameException {
@@ -204,18 +202,17 @@ public class Board {
         throw new GameException(String.format(Errors.NO_FIRE_ENGINE, id));
     }
 
-    public Collection<FireEngine> getFireEngines(Player player) {
-        Collection<FireEngine> fireEnginesOfPlayer = new ArrayList<>();
+    public List<FireEngine> getFireEngines(Player player) {
+        List<FireEngine> fireEnginesOfPlayer = new ArrayList<>();
         for (Field[] row : this.board) {
             for (Field field : row) {
-                Collection<FireEngine> fes = field.getFireEngines(player);
+                List<FireEngine> fes = field.getFireEngines(player);
                 if (fes != null) {
                     fireEnginesOfPlayer.addAll(fes);
                 }
 
             }
         }
-
         return fireEnginesOfPlayer;
     }
 

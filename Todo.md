@@ -20,4 +20,7 @@ Errors
 - [ ] test extinguish command
 
 - [ ] add reputation only for slight and strong burning forest
-- [ ] check refill only when adjacent
+- [x] check refill only when adjacent
+- [ ] check that fire engine can actually still move (no action before)
+
+- [ ] cannot extinguish diagonally

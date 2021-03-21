@@ -1,4 +1,4 @@
-package functionality;
+package bugs;
 
 
 import edu.kit.informatik.commands.Command;

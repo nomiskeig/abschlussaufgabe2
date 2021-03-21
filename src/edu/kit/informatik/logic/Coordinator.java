@@ -1,5 +1,7 @@
 package edu.kit.informatik.logic;
 
+import edu.kit.informatik.resources.Errors;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,20 +32,34 @@ public class Coordinator {
     }
 
 
-    public Player turn() {
+    public Player turn() throws GameException {
+        this.activeRound++;
+        //TODO: enable this.
+        //this.checkForFireToRoll();
+        // round over
+        if (activeRound == this.nextPlayer.size() + 1) {
+            this.firstPlayerThisRound = this.nextPlayer.get(firstPlayerThisRound);
+            this.activePlayer = firstPlayerThisRound;
+            this.activeRound = 1;
+            return firstPlayerThisRound;
+        }
         activePlayer = this.nextPlayer.get(activePlayer);
         return activePlayer;
     }
 
-    private void newRound() {
-        this.firstPlayerThisRound = this.nextPlayer.get(firstPlayerThisRound);
-    }
 
     public void removePlayer(Player player) {
         for (Player playerFromSet : nextPlayer.keySet()) {
             if (nextPlayer.get(playerFromSet) == player) {
                 nextPlayer.put(playerFromSet, nextPlayer.get(player));
             }
+        }
+        nextPlayer.remove(player);
+    }
+
+    public void checkForFireToRoll() throws GameException {
+        if (this.activeRound == this.nextPlayer.size() + 2) {
+            throw new GameException(Errors.FIRE_TO_ROLL_NEEDED);
         }
     }
 

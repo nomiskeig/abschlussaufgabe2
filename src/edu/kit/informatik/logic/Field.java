@@ -1,7 +1,7 @@
 package edu.kit.informatik.logic;
 
-import java.util.Collection;
 
+import java.util.List;
 
 public interface Field {
 
@@ -16,7 +16,7 @@ public interface Field {
 
     void removeFireEngine(FireEngine fireEngine);
 
-    Collection<FireEngine> getFireEngines(Player player);
+    List<FireEngine> getFireEngines(Player player);
 
     boolean isPond();
 

@@ -2,7 +2,7 @@ package edu.kit.informatik.logic;
 
 import edu.kit.informatik.resources.Errors;
 
-import java.util.Collection;
+import java.util.List;
 
 
 public class FireStationField implements Field {
@@ -38,7 +38,7 @@ public class FireStationField implements Field {
     }
 
     @Override
-    public Collection<FireEngine> getFireEngines(Player player) {
+    public List<FireEngine> getFireEngines(Player player) {
         return null;
     }
 

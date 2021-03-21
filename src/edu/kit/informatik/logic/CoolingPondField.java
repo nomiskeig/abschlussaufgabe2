@@ -2,7 +2,7 @@ package edu.kit.informatik.logic;
 
 import edu.kit.informatik.resources.Errors;
 
-import java.util.Collection;
+import java.util.List;
 
 public class CoolingPondField implements Field {
     private static final String COOLING_POND_DISPLAY_NAME = "L";
@@ -28,7 +28,7 @@ public class CoolingPondField implements Field {
     }
 
     @Override
-    public Collection<FireEngine> getFireEngines(Player player) {
+    public List<FireEngine> getFireEngines(Player player) {
         return null;
     }
 

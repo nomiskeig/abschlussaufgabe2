@@ -1,7 +1,7 @@
 package edu.kit.informatik.logic;
 
 public enum Player {
-    A("A"), B("B"), C("C"), D("D");
+    A("A"), B("B"), C("C"), D("D"), NONE("");
 
     private static final int INITIAL_REPUTATION_POINTS = 5;
     private static final int INITIAL_AMOUNT_FIRE_ENGINES = 1;

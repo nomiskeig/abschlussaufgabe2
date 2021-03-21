@@ -2,6 +2,10 @@ package edu.kit.informatik.logic;
 
 import edu.kit.informatik.resources.Errors;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 
 public class Game implements FireBreaker {
 
@@ -24,6 +28,9 @@ public class Game implements FireBreaker {
     public void move(String id, int row, int column) throws GameException {
         this.board.validateFieldIndex(row, column);
         FireEngine fe = this.board.getFireEngineOfPlayer(this.coordinator.getActivePlayer(), id);
+        if (!fe.canMove()) {
+            throw new GameException(String.format(Errors.ALREADY_MADE_ACTION, id));
+        }
         int initialRow = fe.getRow();
         int initialColumn = fe.getColumn();
         if (initialRow == row && initialColumn == column) {
@@ -94,8 +101,8 @@ public class Game implements FireBreaker {
     }
 
     @Override
-    public String turn() {
-        return null;
+    public String turn() throws GameException {
+        return this.coordinator.turn().getName();
     }
 
     @Override
@@ -115,8 +122,20 @@ public class Game implements FireBreaker {
     }
 
     @Override
-    public String showPlayer(String id) {
-        return null;
+    public String showPlayer() throws GameException {
+        if (1 == 0) {
+            throw new GameException("wtf");
+        }
+        Player player = this.coordinator.getActivePlayer();
+        List<FireEngine> fes = this.board.getFireEngines(player);
+        StringBuilder result = new StringBuilder();
+        result.append(player.getName() + "," + player.getReputationPoints());
+        Collections.sort(fes);
+        for (FireEngine fe : fes) {
+            result.append("\n");
+            result.append(fe.toString());
+        }
+        return result.toString();
     }
 
 
