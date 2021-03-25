@@ -65,21 +65,7 @@ public class Board {
 
     public FireState extinguish(int row, int column) throws GameException {
         this.validateFieldIndex(row, column);
-        FireState fs = board[row][column].getFireState();
-        switch (fs) {
-            case NON_FIRE_FIELD:
-                throw new GameException(Errors.CAN_ONLY_EXTINGUISH_FOREST);
-            case DRY:
-            case LIGHT_FIRE:
-                board[row][column].setFireState(FireState.WET);
-                return FireState.WET;
-            case STRONG_FIRE:
-                board[row][column].setFireState(FireState.LIGHT_FIRE);
-                return FireState.LIGHT_FIRE;
-            case WET:
-                throw new GameException(String.format(Errors.CANNOT_EXTINGUISH_WET_FOREST, row, column));
-        }
-        return null;
+        return this.board[row][column].extinguish();
     }
 
 
@@ -191,6 +177,30 @@ public class Board {
                 }
             }
         }
+    }
+
+    public void expandFire(int rowOffset, int columnOffset, boolean withReset) {
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[0].length; j++) {
+                if (board[i][j].getFireState() == FireState.STRONG_FIRE && !board[i][j].alreadyModified()) {
+                    if (isValidFieldIndex(i + rowOffset, j + columnOffset) && !board[i + rowOffset][j + columnOffset]
+                        .alreadyModified()
+                        && board[i + rowOffset][j + columnOffset].getFireState() != FireState.STRONG_FIRE) {
+                        board[i + rowOffset][j + columnOffset].burn();
+                    }
+                } else if (board[i][j].getFireState() == FireState.LIGHT_FIRE && !board[i][j].alreadyModified()) {
+                    board[i][j].burn();
+                }
+            }
+        }
+        if (withReset) {
+            for (Field[] row : this.board) {
+                for (Field field : row) {
+                    field.resetModified();
+                }
+            }
+        }
+
     }
 
     public FireEngine getFireEngineOfPlayer(Player player, String id) throws GameException {

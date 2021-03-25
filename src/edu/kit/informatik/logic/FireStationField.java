@@ -17,6 +17,16 @@ public class FireStationField implements Field {
     }
 
     @Override
+    public boolean alreadyModified() {
+        return false;
+    }
+
+    @Override
+    public void resetModified() {
+
+    }
+
+    @Override
     public FireState getFireState() {
         return FireState.NON_FIRE_FIELD;
 
@@ -50,6 +60,16 @@ public class FireStationField implements Field {
     @Override
     public boolean isFireStation(Player player) {
         return this.owner == player;
+    }
+
+    @Override
+    public void burn() {
+
+    }
+
+    @Override
+    public FireState extinguish() throws GameException {
+        throw new GameException(Errors.CAN_ONLY_EXTINGUISH_FOREST);
     }
 
     @Override

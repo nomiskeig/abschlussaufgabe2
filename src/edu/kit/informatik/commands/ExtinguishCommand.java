@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class ExtinguishCommand extends Command {
     private static final String BASE_REGEX = "^extinguish.*$";
 
-    private static final String EXACT_REGEX = "^extinguish ([^\\s]+) (-?[0-9]+) (-?[0-9]+)$";
+    private static final String EXACT_REGEX = "^extinguish ([^\\s]+)," + Command.DOUBLE_INDEX_REGEX + "$";
 
     public ExtinguishCommand(Game game) {
         super(game);

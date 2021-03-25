@@ -8,6 +8,16 @@ public class CoolingPondField implements Field {
     private static final String COOLING_POND_DISPLAY_NAME = "L";
 
     @Override
+    public boolean alreadyModified() {
+        return false;
+    }
+
+    @Override
+    public void resetModified() {
+
+    }
+
+    @Override
     public FireState getFireState() {
         return FireState.NON_FIRE_FIELD;
     }
@@ -40,6 +50,16 @@ public class CoolingPondField implements Field {
     @Override
     public boolean isFireStation(Player player) {
         return false;
+    }
+
+    @Override
+    public void burn() {
+
+    }
+
+    @Override
+    public FireState extinguish() throws GameException {
+        throw new GameException(Errors.CAN_ONLY_EXTINGUISH_FOREST);
     }
 
     @Override

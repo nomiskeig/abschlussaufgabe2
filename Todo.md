@@ -12,9 +12,11 @@ Errors
 - [ ] move
 - [ ] turn
 - [ ] fire-to-roll
+- refill is possible at all fire stations, not just the owning player
 
 
 - [ ] check for win extinguish
+- [ ] extinguish is not possible on the field the fire engine itself is on
 
 
 - [ ] test extinguish command
@@ -24,3 +26,5 @@ Errors
 - [ ] check that fire engine can actually still move (no action before)
 
 - [ ] cannot extinguish diagonally
+
+- [ ] can not extinguish same field twice

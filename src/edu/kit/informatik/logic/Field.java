@@ -5,8 +5,10 @@ import java.util.List;
 
 public interface Field {
 
-    public static final String FIELD_REGEX = "";
-    //public void extinguish();
+
+    boolean alreadyModified();
+
+    void resetModified();
 
     FireState getFireState();
 
@@ -21,4 +23,8 @@ public interface Field {
     boolean isPond();
 
     boolean isFireStation(Player player);
+
+    void burn();
+
+    FireState extinguish() throws GameException;
 }

@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class MoveCommand extends Command {
     private static final String BASE_REGEX = "^move.*$";
 
-    private static final String EXACT_REGEX = "^move " + Command.ENGINE_REGEX + " " + Command.DOUBLE_INDEX_REGEX + "$";
+    private static final String EXACT_REGEX = "^move " + Command.ENGINE_REGEX + "," + Command.DOUBLE_INDEX_REGEX + "$";
 
     public MoveCommand(Game game) {
         super(game);

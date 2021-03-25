@@ -7,7 +7,7 @@ public class Errors {
         "the provided numbers for the amount in the program arguments could not be parsed. You provided %s, which "
             + "is invalid.";
 
-    public final static String NO_INTEGER = "the game only supports a board size of up to 2147483647.";
+    public final static String NO_INTEGER = "the game only supports numbers up to 2147483647.";
 
     public final static String INVALID_FIELD = "the field '%s', provided in the program arguments, is invalid.";
 
@@ -36,8 +36,7 @@ public class Errors {
 
     public final static String CAN_ONLY_EXTINGUISH_FOREST = "only forest fields can be extinguished.";
 
-    public final static String CANNOT_EXTINGUISH_WET_FOREST
-        = "the field at row %s and column %s is a wet forest field, which can not be extinguished.";
+    public final static String CANNOT_EXTINGUISH_WET_FOREST = "a wet forest can not be extinguished.";
 
     public final static String ACTION_POINT_NEEDED_TO_EXTINGUISH
         = "the fire engine is missing an action point, and thus can currently not extinguish.";
@@ -77,7 +76,10 @@ public class Errors {
         "the fire engine with id %s can no longer move this turn because it already extinguished a field or "
             + "refilled.";
 
-    public final static String FIRE_TO_ROLL_NEEDED
-        = "the fire-to-roll command has to be used at the start of each round before the first player of the round "
-        + "can do something";
+    public final static String FIRE_TO_ROLL_NEEDED =
+        "the fire-to-roll command has to be used at the start of each round before the first player of the round "
+            + "can do something";
+
+    public final static String SOMETHING_WRONG = "something internally went wrong";
+    public final static String NO_DICE_NUMBER = "the supplied number '%s' is not a number from a six sided dice.";
 }

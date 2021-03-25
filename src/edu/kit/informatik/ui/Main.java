@@ -25,7 +25,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        boolean isRunning = true;
         Board board;
         try {
             board = parseArguments(args[0]);
@@ -44,7 +43,7 @@ public class Main {
     //TODO: MAKE PRIVATE and make void and remove parameter
     public static String executeCommand(Command[] commands, String input) {
         boolean found = false;
-        //String input = Terminal.readLine();
+        input = Terminal.readLine();
         for (Command command : commands) {
             if (input.matches(command.getPattern())) {
                 found = true;
@@ -52,12 +51,12 @@ public class Main {
                 switch (result.getType()) {
                     case SUCCESS:
                         Terminal.printLine(result.getMessage());
-                        return result.getMessage();
-                    //break;
+                        //return result.getMessage();
+                        break;
                     case FAILURE:
                         Terminal.printError(result.getMessage());
-                        return result.getMessage();
-                    //break;
+                        //return result.getMessage();
+                        break;
                     case QUIT:
                         isRunning = false;
                         break;

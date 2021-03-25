@@ -6,7 +6,7 @@ import edu.kit.informatik.ui.Result;
 public abstract class Command {
     public static final String INDEX_REGEX = "(-?[0-9]+)";
 
-    public static final String DOUBLE_INDEX_REGEX = "(-?[0-9]+) (-?[0-9]+)";
+    public static final String DOUBLE_INDEX_REGEX = "(-?[0-9]+),(-?[0-9]+)";
     public static final String ENGINE_REGEX = "([^\\s]+)";
 
 

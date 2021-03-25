@@ -18,4 +18,7 @@ public interface FireBreaker {
     String showField(int row, int column) throws GameException;
 
     String showPlayer() throws GameException;
+
+    String fireToRoll(int dice) throws GameException;
+
 }

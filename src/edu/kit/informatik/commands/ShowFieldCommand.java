@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class ShowFieldCommand extends Command {
     private static final String BASE_REGEX = "^show-field.*$";
 
-    private static final String EXACT_REGEX = "^show-field (-?[0-9]+) (-?[0-9]+)$";
+    private static final String EXACT_REGEX = "^show-field " + Command.DOUBLE_INDEX_REGEX + "$";
 
     public ShowFieldCommand(Game game) {
         super(game);

@@ -1,8 +1,8 @@
 package edu.kit.informatik.logic;
 
 import edu.kit.informatik.resources.Errors;
+import edu.kit.informatik.resources.Messages;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class Game implements FireBreaker {
             throw new GameException(Errors.ENGINE_CAN_NOT_STAY_ON_SAME_FIELD);
         }
         this.board.move(fe, initialRow, initialColumn, row, column, 2);
-        if (initialColumn == fe.getRow() && initialColumn == fe.getColumn()) {
+        if (initialRow == fe.getRow() && initialColumn == fe.getColumn()) {
             throw new GameException(String.format(Errors.NO_PATH, initialRow, initialColumn, row, column));
         }
 
@@ -136,6 +136,48 @@ public class Game implements FireBreaker {
             result.append(fe.toString());
         }
         return result.toString();
+    }
+
+    @Override
+    public String fireToRoll(int dice) throws GameException {
+        switch (dice) {
+            case 1:
+                board.expandFire(-1, 0, false);
+                board.expandFire(0, 1, false);
+                board.expandFire(1, 0, false);
+                board.expandFire(0, -1, true);
+                break;
+            case 2:
+                board.expandFire(-1, 0, true);
+                break;
+            case 3:
+                board.expandFire(0, 1, true);
+                break;
+            case 4:
+                board.expandFire(1, 0, true);
+                break;
+            case 5:
+                board.expandFire(0, -1, true);
+                break;
+            case 6:
+                break;
+            default:
+                throw new GameException(String.format(Errors.NO_DICE_NUMBER, dice));
+        }
+        boolean fireEnginesLeft = false;
+        for (Player player : Player.values()) {
+            if (board.getFireEngines(player).isEmpty()) {
+                coordinator.removePlayer(player);
+
+            } else {
+                fireEnginesLeft = true;
+
+            }
+        }
+        if (!fireEnginesLeft) {
+            return Messages.LOSE;
+        }
+        return Messages.OK;
     }
 
 
