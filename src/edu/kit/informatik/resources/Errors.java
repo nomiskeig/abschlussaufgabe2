@@ -41,6 +41,8 @@ public class Errors {
     public final static String ACTION_POINT_NEEDED_TO_EXTINGUISH
         = "the fire engine is missing an action point, and thus can currently not extinguish.";
 
+    public final static String ACTION_POINT_NEEDED_TO_MOVE
+        = "the fire engine is missing an action point, and thus can currently not move.";
     public final static String WATER_NEEDED_TO_EXTINGUISH
         = "the fire engine is missing water, and thus can currently not extinguish.";
 
@@ -54,7 +56,7 @@ public class Errors {
         = "the fire engine with id %s can currently not refill, as it already has the maximum capacity of water.";
 
     public final static String NO_ACTION_TO_REFILL
-        = "the fire engine with id %s has no actions left, this can currently not refill";
+        = "the fire engine with id %s has no actions left, this can currently not refill.";
 
     public final static String NOT_ADJACENT_REFILL =
         "the engine is not adjacent to a pond or the fire station of the active player, thus the fire engine can "
@@ -78,8 +80,39 @@ public class Errors {
 
     public final static String FIRE_TO_ROLL_NEEDED =
         "the fire-to-roll command has to be used at the start of each round before the first player of the round "
-            + "can do something";
+            + "can do something.";
 
     public final static String SOMETHING_WRONG = "something internally went wrong";
     public final static String NO_DICE_NUMBER = "the supplied number '%s' is not a number from a six sided dice.";
+
+    public final static String GAME_OVER = "the game has already ended, thus this command cannot be used.";
+
+    public final static String NO_FIRE_TO_ROLL_POSSIBLE
+        = "can not roll fire at the moment, as it is not the beginning of a round.";
+
+    public final static String CANNOT_EXTINGUISH_OWN_FIELD
+        = "a fire engine can not extinguish the field it's currently placed on";
+
+    public final static String CANNOT_EXTINGUISH_SAME_FIELD_TWICE
+        = "a fire engine can not extinguish the same field twice in one turn.";
+
+    public final static String AT_LEAST_FIVE_ROWS_AND_COLUMNS =
+        "at least five rows and columns are required for the game. There are only %s rows and %s columns provided "
+            + "in the program arguments";
+
+    public final static String EVEN_NUMBER_ROWS_OR_COLUMNS =
+        "an uneven number the rows and columns respectively is required. There are %s rows and %s columns provided "
+            + "in the program arguments.";
+
+    public final static String BOARD_MISSING_LIGHT_FIRE
+        = "the board provided does not contain at least on field with light fire.";
+
+    public final static String BOARD_MISSING_STRONG_FIRE
+        = "the board provided does not contain at least on field with strong fire.";
+
+    public final static String BOARD_MISSING_POND = "there is a pond missing at row %s and column %s.";
+
+    public final static String BOARD_MISSING_FIRE_STATION = "the fire station of player %s is missing.";
+
+    public final static String BOARD_MISSING_FIRE_ENGINE = "there is no fire engine of player %s on the correct field.";
 }

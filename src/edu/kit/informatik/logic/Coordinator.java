@@ -12,15 +12,20 @@ public class Coordinator {
 
     private int playersAlive;
 
+    private boolean isOver;
+
     private Player firstPlayerThisRound;
+    private Player firstPlayerNextRound;
 
     private Player activePlayer;
 
     private Map<Player, Player> nextPlayer;
 
     public Coordinator() {
+        this.isOver = false;
         this.activePlayer = Player.A;
         this.firstPlayerThisRound = Player.A;
+        this.firstPlayerNextRound = Player.B;
         this.playersAlive = 4;
         this.activeRound = 1;
         this.turnsThisRound = 4;
@@ -33,34 +38,82 @@ public class Coordinator {
 
 
     public Player turn() throws GameException {
+        
         this.activeRound++;
-        //TODO: enable this.
-        //this.checkForFireToRoll();
+
+
         // round over
         if (activeRound == this.nextPlayer.size() + 1) {
-            this.firstPlayerThisRound = this.nextPlayer.get(firstPlayerThisRound);
+            if (this.nextPlayer.containsKey(firstPlayerThisRound)) {
+                this.firstPlayerThisRound = this.nextPlayer.get(firstPlayerThisRound);
+            } else {
+                this.firstPlayerThisRound = this.firstPlayerNextRound;
+            }
+
+
             this.activePlayer = firstPlayerThisRound;
-            this.activeRound = 1;
+            this.activeRound = 0;
             return firstPlayerThisRound;
         }
-        activePlayer = this.nextPlayer.get(activePlayer);
+        if (this.nextPlayer.containsKey(activePlayer)) {
+            activePlayer = this.nextPlayer.get(activePlayer);
+        }
+
         return activePlayer;
     }
 
+    public void setOver() {
+        this.isOver = true;
+    }
 
-    public void removePlayer(Player player) {
+    public void validateNotOver() throws GameException {
+        if (this.isOver) {
+            throw new GameException(Errors.GAME_OVER);
+        }
+    }
+
+
+    public Player removePlayer(Player player) {
+        if (!player.isAlive()) {
+            return null;
+        }
+        Player result = null;
+        if (this.firstPlayerThisRound == player) {
+            this.activePlayer = nextPlayer.get(activePlayer);
+            result = this.activePlayer;
+            this.firstPlayerNextRound = this.nextPlayer.get(this.firstPlayerThisRound);
+        }
         for (Player playerFromSet : nextPlayer.keySet()) {
             if (nextPlayer.get(playerFromSet) == player) {
                 nextPlayer.put(playerFromSet, nextPlayer.get(player));
             }
         }
+
         nextPlayer.remove(player);
+        player.isOut();
+        if (nextPlayer.isEmpty()) {
+            this.setOver();
+        }
+
+        return result;
     }
 
-    public void checkForFireToRoll() throws GameException {
-        if (this.activeRound == this.nextPlayer.size() + 2) {
+    public void validateCommandPossible() throws GameException {
+        this.validateNotOver();
+        if (this.activeRound == 0) {
             throw new GameException(Errors.FIRE_TO_ROLL_NEEDED);
         }
+    }
+
+    public void canRollFire() throws GameException {
+        this.validateNotOver();
+        if (this.activeRound != 0) {
+            throw new GameException(Errors.NO_FIRE_TO_ROLL_POSSIBLE);
+        }
+    }
+
+    public void rolledFire() {
+        this.activeRound = 1;
     }
 
     public Player getActivePlayer() {

@@ -1,10 +1,15 @@
 package edu.kit.informatik.commands;
 
 import edu.kit.informatik.logic.Game;
+import edu.kit.informatik.resources.Errors;
+import edu.kit.informatik.resources.Messages;
 import edu.kit.informatik.ui.Result;
+import edu.kit.informatik.ui.ResultType;
 
 public class ResetCommand extends Command {
     private static final String BASE_REGEX = "^reset.*$";
+
+    private static final String EXACT_REGEX = "^reset$";
 
     public ResetCommand(Game game) {
         super(game);
@@ -17,6 +22,9 @@ public class ResetCommand extends Command {
 
     @Override
     public Result executeCommand(String command) {
-        return null;
+        if (command.matches(EXACT_REGEX)) {
+            return new Result(ResultType.RESET, Messages.OK);
+        }
+        return new Result(ResultType.FAILURE, Errors.INVALID_INPUT);
     }
 }

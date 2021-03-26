@@ -1,16 +1,19 @@
 package edu.kit.informatik.logic;
 
 public enum Player {
-    A("A"), B("B"), C("C"), D("D"), NONE("");
+    A("A"), B("B"), C("C"), D("D");
 
-    private static final int INITIAL_REPUTATION_POINTS = 5;
+    private static final int INITIAL_REPUTATION_POINTS = 0;
     private static final int INITIAL_AMOUNT_FIRE_ENGINES = 1;
     private final String name;
     private int reputationPoints;
     private int amountOfFireEngines;
 
+    private boolean alive;
+
     Player(String name) {
         this.name = name;
+        this.alive = true;
         this.amountOfFireEngines = INITIAL_AMOUNT_FIRE_ENGINES;
         this.reputationPoints = INITIAL_REPUTATION_POINTS;
     }
@@ -28,6 +31,25 @@ public enum Player {
         return name;
     }
 
+    public boolean isAlive() {
+        return this.alive;
+    }
+
+    public void isOut() {
+        this.alive = false;
+    }
+
+    public void boughtEngine() {
+        this.reputationPoints -= 5;
+        this.amountOfFireEngines += 1;
+    }
+
+    public void reset() {
+        this.reputationPoints = INITIAL_REPUTATION_POINTS;
+        this.amountOfFireEngines = INITIAL_AMOUNT_FIRE_ENGINES;
+        this.alive = true;
+    }
+
     public int getReputationPoints() {
         return reputationPoints;
     }
@@ -40,9 +62,6 @@ public enum Player {
         return amountOfFireEngines;
     }
 
-    public void setAmountOfFireEngines(int amountOfFireEngines) {
-        this.amountOfFireEngines = amountOfFireEngines;
-    }
 
     public void addReputationPoint() {
         this.reputationPoints += 1;

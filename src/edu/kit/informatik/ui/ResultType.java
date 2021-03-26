@@ -20,5 +20,5 @@ public enum ResultType {
     /**
      * The execution quit the program.
      */
-    QUIT
+    QUIT, RESET
 }

@@ -56,16 +56,19 @@ public class Board {
         int row = fireEngine.getRow();
         int column = fireEngine.getColumn();
         this.validateFieldIndex(row, column);
-        if (this.isAdjacentToFireStation(fireEngine, player)) {
+        if (this.isAdjacentToFireStationOrOptionalPond(fireEngine, player, false)) {
             this.board[row][column].placeFireEngine(fireEngine);
         } else {
             throw new GameException(String.format(Errors.MISSING_FIRE_STATION, row, column));
         }
     }
 
-    public FireState extinguish(int row, int column) throws GameException {
+    public Pair<FireState, FireState> extinguish(int row, int column) throws GameException {
+        Pair<FireState, FireState> fireStates = new Pair<>(this.board[row][column].getFireState(), null);
         this.validateFieldIndex(row, column);
-        return this.board[row][column].extinguish();
+
+        fireStates.setSecond(this.board[row][column].extinguish());
+        return fireStates;
     }
 
 
@@ -88,18 +91,29 @@ public class Board {
     }
 
 
-    public boolean isAdjacent(FireEngine fe, int row, int column) {
-        return row >= fe.getRow() - 1 && row <= fe.getRow() + 1 && column >= fe.getColumn() - 1
-            && column <= fe.getColumn() + 1;
+    public boolean isDirectlyAdjacent(FireEngine fe, int row, int column) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j = j + 2) {
+                if (i != 0) {
+                    j = 0;
+                }
+                int newRow = fe.getRow() + i;
+                int newColumn = fe.getColumn() + j;
+                if (isValidFieldIndex(newRow, newColumn) && newRow == row && newColumn == column) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    public boolean isAdjacentToFireStation(FireEngine fe, Player player) {
+    public boolean isAdjacentToFireStationOrOptionalPond(FireEngine fe, Player player, boolean withPond) {
         int row = fe.getRow();
         int column = fe.getColumn();
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = column - 1; j <= column + 1; j++) {
                 if (i >= 0 && i < this.board.length && j >= 0 && j < this.board[0].length) {
-                    if (this.board[i][j].isFireStation(player)) {
+                    if (this.board[i][j].isFireStation(player) || (withPond && this.board[i][j].isPond())) {
                         return true;
                     }
                 }
@@ -109,19 +123,16 @@ public class Board {
 
     }
 
-    public boolean isAdjacentToPond(FireEngine fe, Player player) {
-        int row = fe.getRow();
-        int column = fe.getColumn();
-        for (int i = row - 1; i <= row + 1; i++) {
-            for (int j = column - 1; j <= column + 1; j++) {
-                if (i >= 0 && i < this.board.length && j >= 0 && j < this.board[0].length) {
-                    if (this.board[i][j].isPond()) {
-                        return true;
-                    }
+    public boolean isWon() {
+        boolean win = true;
+        for (Field[] row : this.board) {
+            for (Field field : row) {
+                if (field.getFireState() == FireState.LIGHT_FIRE || field.getFireState() == FireState.STRONG_FIRE) {
+                    win = false;
                 }
             }
         }
-        return false;
+        return win;
     }
 
     /**
@@ -202,6 +213,7 @@ public class Board {
         }
 
     }
+
 
     public FireEngine getFireEngineOfPlayer(Player player, String id) throws GameException {
         for (FireEngine fe : this.getFireEngines(player)) {
