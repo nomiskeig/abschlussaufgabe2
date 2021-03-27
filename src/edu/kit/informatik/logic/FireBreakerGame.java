@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class Game implements FireBreaker {
+public class FireBreakerGame implements FireBreaker {
 
     private static final int REPUTATION_TO_BUY_ENGINE = 5;
 
@@ -18,7 +18,7 @@ public class Game implements FireBreaker {
     private final Coordinator coordinator;
 
 
-    public Game(Board board) {
+    public FireBreakerGame(Board board) {
         this.board = board;
         this.coordinator = new Coordinator();
         for (Player player : Player.values()) {
@@ -89,7 +89,6 @@ public class Game implements FireBreaker {
     @Override
     public int refill(String id) throws GameException {
         this.coordinator.validateCommandPossible();
-        Player player = this.coordinator.getActivePlayer();
         FireEngine fe = this.board.getFireEngineOfPlayer(this.coordinator.getActivePlayer(), id);
         if (!fe.enoughActionPoints()) {
             throw new GameException(String.format(Errors.NO_ACTION_TO_REFILL, id));
@@ -97,7 +96,7 @@ public class Game implements FireBreaker {
         if (fe.getWater() == 3) {
             throw new GameException(String.format(Errors.ALREADY_FULL, id));
         }
-        if (this.board.isAdjacentToFireStationOrOptionalPond(fe, player, true)) {
+        if (this.board.isAdjacentToFireStationOrOptionalPond(fe, null, true)) {
             fe.refill();
         } else {
             throw new GameException(String.format(Errors.NOT_ADJACENT_REFILL, fe.getRow(), fe.getColumn()));
@@ -116,7 +115,7 @@ public class Game implements FireBreaker {
         }
         FireEngine newFireEngine = new FireEngine(activePlayer.getName() + activePlayer.getAmountOfFireEngines(), row,
             column);
-        board.placeFireEngine(newFireEngine, activePlayer);
+        board.placeFireEngine(newFireEngine);
         activePlayer.boughtEngine();
         return activePlayer.getReputationPoints();
 
@@ -125,17 +124,22 @@ public class Game implements FireBreaker {
     @Override
     public String turn() throws GameException {
         this.coordinator.validateCommandPossible();
-        return this.coordinator.turn().getName();
+        String nextPlayerName = this.coordinator.turn().getName();
+        if (coordinator.isNewRound()) {
+            // reset fire engines
+            for (Player player : Player.values()) {
+                for (FireEngine fe : this.board.getFireEngines(player)) {
+                    fe.reset();
+                }
+            }
+        }
+        return nextPlayerName;
     }
 
-    @Override
-    public String reset() {
-        return null;
-    }
 
     @Override
     public String showBoard() {
-        return board.getFireRepresentation();
+        return board.toString();
     }
 
     @Override
@@ -191,10 +195,6 @@ public class Game implements FireBreaker {
         boolean fireEnginesLeft = false;
         Player nextPlayerDecidedByFireToRoll = null;
         for (Player player : Player.values()) {
-            for (FireEngine fe : this.board.getFireEngines(player)) {
-                fe.reset();
-            }
-
             if (board.getFireEngines(player).isEmpty()) {
                 nextPlayerDecidedByFireToRoll = coordinator.removePlayer(player);
 

@@ -2,6 +2,12 @@ package edu.kit.informatik.logic;
 
 import java.util.Objects;
 
+/**
+ * This class
+ *
+ * @param <F>
+ * @param <S>
+ */
 public class Pair<F, S> {
     private F first;
     private S second;
@@ -11,10 +17,6 @@ public class Pair<F, S> {
         this.second = second;
     }
 
-    public Pair() {
-        this.first = null;
-        this.second = null;
-    }
 
     public void setFirst(F first) {
         this.first = first;

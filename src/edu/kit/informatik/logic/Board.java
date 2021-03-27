@@ -5,74 +5,102 @@ import edu.kit.informatik.resources.Errors;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The class models the board of the fireBreaker game. It contains methods to interact with the board, as well as
+ * checking if a field is even on the board.
+ *
+ * @author Simon Giek
+ * @version 1.0
+ */
 public class Board {
-
+    /**
+     * The array containing all the fields of the board.
+     */
     private Field[][] board;
 
+    /**
+     * The constructor.
+     *
+     * @param board two-dimensional array containing all the fields of the board.
+     */
     public Board(Field[][] board) {
         this.board = board;
     }
 
-    public String getFireRepresentation() {
-        StringBuilder result = new StringBuilder();
-        for (Field[] row : board) {
-            for (Field field : row) {
-                FireState fs = field.getFireState();
-                if (!(fs == FireState.DRY || fs == FireState.WET)) {
-                    result.append(field.getFireState().getDisplayName());
-                } else {
-                    result.append(FireState.NON_FIRE_FIELD.getDisplayName());
-                }
-                result.append(",");
-            }
-            result = new StringBuilder(result.substring(0, result.length() - 1));
-            result.append("\n");
-        }
-        return result.substring(0, result.length() - 1);
-    }
-
+    /**
+     * Checks that the given indices is actually on the board, and returns the result of the toString method of the
+     * specified field.
+     *
+     * @param row    the row of the field to show.
+     * @param column the column of the field to show.
+     * @return the result of the toString method of the specified field.
+     * @throws GameException if the index is invalid.
+     */
     public String showField(int row, int column) throws GameException {
         this.validateFieldIndex(row, column);
         return this.board[row][column].toString();
     }
 
-
+    /**
+     * Validates the given indices and tries to place the given fireEngine on the specified field.
+     *
+     * @param row        the row of the field to place the fireEngine on.
+     * @param column     the column of the field to place the fireEngine on.
+     * @param fireEngine the fireEngine to place on the field.
+     * @throws GameException if the index is not valid or the fireEngine can't be placed on the field.
+     */
     public void placeFireEngine(int row, int column, FireEngine fireEngine) throws GameException {
         this.validateFieldIndex(row, column);
         this.board[row][column].placeFireEngine(fireEngine);
     }
 
 
-    //TODO: FireEngine has to be diagonal not adjacent at start;
-
     /**
-     * Used for placing new fireEngines when adding new fireEngines to the game, because of the restriction.
+     * This method is used for placing new fireEngines when adding new fireEngines to the game, because of the
+     * restrictions that are in place.
      *
-     * @param fireEngine
-     * @param player
-     * @throws GameException
+     * @param fireEngine the fireEngine to place.
+     * @throws GameException if any of the rules of the games are broken.
      */
-    public void placeFireEngine(FireEngine fireEngine, Player player) throws GameException {
+    public void placeFireEngine(FireEngine fireEngine) throws GameException {
         int row = fireEngine.getRow();
         int column = fireEngine.getColumn();
         this.validateFieldIndex(row, column);
-        if (this.isAdjacentToFireStationOrOptionalPond(fireEngine, player, false)) {
+        if (this.board[row][column].getFireState() == FireState.LIGHT_FIRE
+            || this.board[row][column].getFireState() == FireState.STRONG_FIRE) {
+            throw new GameException(Errors.CANNOT_PLACE_NEW_ENGINE_ON_FIRE);
+        }
+        if (this.isAdjacentToFireStationOrOptionalPond(fireEngine, fireEngine.getOwningPlayer(), false)) {
             this.board[row][column].placeFireEngine(fireEngine);
         } else {
             throw new GameException(String.format(Errors.MISSING_FIRE_STATION, row, column));
         }
     }
 
+    /**
+     * Validates the indices and tries to extinguish the specified field.
+     *
+     * @param row    the row of the field to be extinguished.
+     * @param column the column of the field to be extinguished.
+     * @return a pair containing the initial fireState of the field as the first object, and the fireState of the field
+     * after extinguishing as the second object.
+     * @throws GameException if the indices are invalid or the specified field can't be extinguished.
+     */
     public Pair<FireState, FireState> extinguish(int row, int column) throws GameException {
-        Pair<FireState, FireState> fireStates = new Pair<>(this.board[row][column].getFireState(), null);
         this.validateFieldIndex(row, column);
-
+        Pair<FireState, FireState> fireStates = new Pair<>(this.board[row][column].getFireState(), null);
         fireStates.setSecond(this.board[row][column].extinguish());
         return fireStates;
     }
 
 
-    // TODO: make this method private again, it's temporally for tests
+    /**
+     * Checks whether the given indices are indices on the board.
+     *
+     * @param row    the row to check for.
+     * @param column the column to check for.
+     * @throws GameException if either the row or the column is invalid.
+     */
     public void validateFieldIndex(int row, int column) throws GameException {
         int rows = this.board.length;
         int columns = this.board[0].length;
@@ -84,21 +112,36 @@ public class Board {
         }
     }
 
+    /**
+     * Checks whether the given indices are indices on the board.
+     *
+     * @param row    the row to chek for.
+     * @param column the column to check for.
+     * @return true if the field at the given indices is on the board, false if it is not.
+     */
     private boolean isValidFieldIndex(int row, int column) {
         int rows = this.board.length;
         int columns = this.board[0].length;
         return row >= 0 && row < rows && column >= 0 && column < columns;
     }
 
-
+    /**
+     * Checks whether the given fireEngine is directly adjacent to the field with the given row and column.
+     *
+     * @param fe     the fireEngine to check the adjacency of.
+     * @param row    the row of the field to check.
+     * @param column the column of the field to check.
+     * @return true if the field is directly adjacent, false if it is not.
+     */
     public boolean isDirectlyAdjacent(FireEngine fe, int row, int column) {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j = j + 2) {
+                int k = j;
                 if (i != 0) {
-                    j = 0;
+                    k = 0;
                 }
                 int newRow = fe.getRow() + i;
-                int newColumn = fe.getColumn() + j;
+                int newColumn = fe.getColumn() + k;
                 if (isValidFieldIndex(newRow, newColumn) && newRow == row && newColumn == column) {
                     return true;
                 }
@@ -107,12 +150,29 @@ public class Board {
         return false;
     }
 
+    /**
+     * Checks whether the given fireEngine is adjacent to the fireStation of the specified player or if it is adjacent
+     * to any of the fireStations if no player is specified. If the third argument is true, it takes the cooling ponds
+     * as valid adjacent fields..
+     *
+     * @param fe       the fireEngine to check for.
+     * @param player   the owner of the fireStation to check. If this is null, the method checks for either of the
+     *                 stations.
+     * @param withPond true if the method should take cooling ponds into account, false if it should not.
+     * @return true if the fireEngine is adjacent to a valid field, false if it is not.
+     */
     public boolean isAdjacentToFireStationOrOptionalPond(FireEngine fe, Player player, boolean withPond) {
         int row = fe.getRow();
         int column = fe.getColumn();
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = column - 1; j <= column + 1; j++) {
-                if (i >= 0 && i < this.board.length && j >= 0 && j < this.board[0].length) {
+                if (isValidFieldIndex(i, j)) {
+                    if (player == null) {
+                        if (this.board[i][j].isFireStation() || (withPond && this.board[i][j].isPond())) {
+                            return true;
+                        }
+
+                    }
                     if (this.board[i][j].isFireStation(player) || (withPond && this.board[i][j].isPond())) {
                         return true;
                     }
@@ -137,7 +197,7 @@ public class Board {
 
     /**
      * Searches recursively for a path from the start to the goal field. Acts according to the move rules of the
-     * assignment.
+     * assignment. If a path is found, it places the fireEngine on it and removes it from the initial field.
      *
      * @param fe             the fire engine to move.
      * @param fromRow        the row the move is performed from.
@@ -166,22 +226,21 @@ public class Board {
         if (remainingSteps == 0) {
             return;
         }
-
         // check the four fields to which the engine can theoretically move in one step
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j = j + 2) {
+                int k = j;
                 if (i != 0) {
-                    j = 0;
+                    k = 0;
                 }
-
                 int newRow = fromRow + i;
-                int newColumn = fromColumn + j;
+                int newColumn = fromColumn + k;
                 if (isValidFieldIndex(newRow, newColumn)) {
                     newField = this.board[newRow][newColumn];
                     // this check is required in order to get the correct error message
                     if (newRow == toRow && newColumn == toColumn) {
                         move(fe, newRow, newColumn, toRow, toColumn, remainingSteps - 1);
-                    } else if (!(newField.getFireState() == FireState.NON_FIRE_FIELD
+                    } else if (!(newField.getFireState() == FireState.NON_BURNABLE_FIELD
                         || newField.getFireState() == FireState.STRONG_FIRE)) {
                         move(fe, newRow, newColumn, toRow, toColumn, remainingSteps - 1);
                     }
@@ -236,6 +295,25 @@ public class Board {
             }
         }
         return fireEnginesOfPlayer;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (Field[] row : board) {
+            for (Field field : row) {
+                FireState fs = field.getFireState();
+                if (!(fs == FireState.DRY || fs == FireState.WET)) {
+                    result.append(field.getFireState().getDisplayName());
+                } else {
+                    result.append(FireState.NON_BURNABLE_FIELD.getDisplayName());
+                }
+                result.append(",");
+            }
+            result = new StringBuilder(result.substring(0, result.length() - 1));
+            result.append("\n");
+        }
+        return result.substring(0, result.length() - 1);
     }
 
 }

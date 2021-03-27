@@ -8,9 +8,6 @@ import java.util.Map;
 public class Coordinator {
 
     private int activeRound;
-    private int turnsThisRound;
-
-    private int playersAlive;
 
     private boolean isOver;
 
@@ -18,17 +15,17 @@ public class Coordinator {
     private Player firstPlayerNextRound;
 
     private Player activePlayer;
+    private boolean removedStartingPlayerThisRound;
 
     private Map<Player, Player> nextPlayer;
 
     public Coordinator() {
+        this.removedStartingPlayerThisRound = false;
         this.isOver = false;
         this.activePlayer = Player.A;
         this.firstPlayerThisRound = Player.A;
         this.firstPlayerNextRound = Player.B;
-        this.playersAlive = 4;
         this.activeRound = 1;
-        this.turnsThisRound = 4;
         this.nextPlayer = new HashMap<>();
         this.nextPlayer.put(Player.A, Player.B);
         this.nextPlayer.put(Player.B, Player.C);
@@ -37,13 +34,11 @@ public class Coordinator {
     }
 
 
-    public Player turn() throws GameException {
-        
+    public Player turn() {
         this.activeRound++;
-
-
         // round over
         if (activeRound == this.nextPlayer.size() + 1) {
+            this.removedStartingPlayerThisRound = false;
             if (this.nextPlayer.containsKey(firstPlayerThisRound)) {
                 this.firstPlayerThisRound = this.nextPlayer.get(firstPlayerThisRound);
             } else {
@@ -72,16 +67,25 @@ public class Coordinator {
         }
     }
 
+    public boolean isNewRound() {
+        return this.activeRound == 0;
+    }
+
 
     public Player removePlayer(Player player) {
-        if (!player.isAlive()) {
-            return null;
+        if (!nextPlayer.containsKey(player)) {
+            return this.removedStartingPlayerThisRound ? this.activePlayer : null;
         }
-        Player result = null;
-        if (this.firstPlayerThisRound == player) {
+        if (this.firstPlayerThisRound == player || this.removedStartingPlayerThisRound) {
+
             this.activePlayer = nextPlayer.get(activePlayer);
-            result = this.activePlayer;
-            this.firstPlayerNextRound = this.nextPlayer.get(this.firstPlayerThisRound);
+            if (!this.removedStartingPlayerThisRound) {
+                this.firstPlayerNextRound = this.nextPlayer.get(this.firstPlayerThisRound);
+            } else {
+                this.firstPlayerNextRound = this.nextPlayer.get(this.firstPlayerNextRound);
+            }
+            this.removedStartingPlayerThisRound = true;
+
         }
         for (Player playerFromSet : nextPlayer.keySet()) {
             if (nextPlayer.get(playerFromSet) == player) {
@@ -90,12 +94,10 @@ public class Coordinator {
         }
 
         nextPlayer.remove(player);
-        player.isOut();
         if (nextPlayer.isEmpty()) {
             this.setOver();
         }
-
-        return result;
+        return this.removedStartingPlayerThisRound ? this.activePlayer : null;
     }
 
     public void validateCommandPossible() throws GameException {

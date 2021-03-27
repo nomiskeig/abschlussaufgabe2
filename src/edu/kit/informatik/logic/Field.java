@@ -24,6 +24,8 @@ public interface Field {
 
     boolean isFireStation(Player player);
 
+    boolean isFireStation();
+
     void burn();
 
     FireState extinguish() throws GameException;

@@ -9,11 +9,9 @@ public enum Player {
     private int reputationPoints;
     private int amountOfFireEngines;
 
-    private boolean alive;
 
     Player(String name) {
         this.name = name;
-        this.alive = true;
         this.amountOfFireEngines = INITIAL_AMOUNT_FIRE_ENGINES;
         this.reputationPoints = INITIAL_REPUTATION_POINTS;
     }
@@ -31,13 +29,6 @@ public enum Player {
         return name;
     }
 
-    public boolean isAlive() {
-        return this.alive;
-    }
-
-    public void isOut() {
-        this.alive = false;
-    }
 
     public void boughtEngine() {
         this.reputationPoints -= 5;
@@ -47,7 +38,6 @@ public enum Player {
     public void reset() {
         this.reputationPoints = INITIAL_REPUTATION_POINTS;
         this.amountOfFireEngines = INITIAL_AMOUNT_FIRE_ENGINES;
-        this.alive = true;
     }
 
     public int getReputationPoints() {

@@ -45,14 +45,6 @@ public class FireEngine implements Comparable<FireEngine> {
         return water;
     }
 
-    public void setWater(int water) {
-        this.water = water;
-    }
-
-
-    public void setActions(int actions) {
-        this.actions = actions;
-    }
 
     public String getId() {
         return id;
@@ -81,10 +73,7 @@ public class FireEngine implements Comparable<FireEngine> {
     public boolean canMove() {
         return (this.canMove);
     }
-
-    public void setCanMove(boolean canMove) {
-        this.canMove = canMove;
-    }
+    
 
     public void moved() {
         this.actions -= 1;

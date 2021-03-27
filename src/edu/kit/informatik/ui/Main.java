@@ -35,7 +35,7 @@ public class Main {
             return;
         }
 
-        Game game = new Game(board);
+        FireBreaker game = new FireBreakerGame(board);
         Command[] commands = Command.getCommands(game);
         while (isRunning) {
             if (reset) {
@@ -44,19 +44,19 @@ public class Main {
                 } catch (ParseException e) {
                     Terminal.printError(e.getMessage());
                 }
-                game = new Game(board);
+                game = new FireBreakerGame(board);
                 commands = Command.getCommands(game);
                 reset = false;
             }
-            executeCommand(commands, "");
+            executeCommand(commands);
         }
 
     }
 
-    //TODO: MAKE PRIVATE and make void and remove parameter
-    public static String executeCommand(Command[] commands, String input) {
+    //TODO PRIVATE
+    public static void executeCommand(Command[] commands) {
         boolean found = false;
-        input = Terminal.readLine();
+        String input = Terminal.readLine();
         for (Command command : commands) {
             if (input.matches(command.getPattern())) {
                 found = true;
@@ -86,10 +86,8 @@ public class Main {
         }
         if (!found) {
             Terminal.printError(Errors.NO_SUCH_COMMAND);
-            return Errors.NO_SUCH_COMMAND;
         }
-        //TODO: REMOVE THIS
-        return "";
+
     }
 
 

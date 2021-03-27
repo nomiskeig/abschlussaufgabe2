@@ -1,11 +1,11 @@
 package bugs;
 
 import edu.kit.informatik.logic.Board;
-import edu.kit.informatik.logic.Game;
+import edu.kit.informatik.logic.FireBreakerGame;
 import edu.kit.informatik.logic.GameException;
 import edu.kit.informatik.commands.ParseException;
 import edu.kit.informatik.resources.Errors;
-import edu.kit.informatik.ui.Main;
+import edu.kit.informatik.ui.BoardParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ShowFieldTest {
-    Game game;
+    FireBreakerGame game;
 
     @BeforeEach
     public void setup() throws ParseException {
-        Board board = Main.parseArguments("5,5,A,+,L,+,D,+,A0,*,D0,+,L,*,d,*,L,+,C0,d,B0,+,C,+,L,+,B");
-        game = new Game(board);
+        BoardParser parser = new BoardParser("5,5,A,+,L,+,D,+,A0,*,D0,+,L,*,d,*,L,+,C0,d,B0,+,C,+,L,+,B");
+        Board board = parser.parseAndGetBoard();
+
+        game = new FireBreakerGame(board);
     }
 
     @Test

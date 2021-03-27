@@ -82,6 +82,11 @@ public class ForestField implements Field {
     }
 
     @Override
+    public boolean isFireStation() {
+        return false;
+    }
+
+    @Override
     public void burn() {
         this.alreadyModified = true;
         switch (this.fireState) {
@@ -115,7 +120,7 @@ public class ForestField implements Field {
                 return FireState.LIGHT_FIRE;
             case WET:
                 throw new GameException(Errors.CANNOT_EXTINGUISH_WET_FOREST);
-            case NON_FIRE_FIELD:
+            case NON_BURNABLE_FIELD:
                 throw new GameException(Errors.SOMETHING_WRONG);
         }
         return null;

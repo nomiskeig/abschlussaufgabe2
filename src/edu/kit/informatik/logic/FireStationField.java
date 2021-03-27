@@ -28,7 +28,7 @@ public class FireStationField implements Field {
 
     @Override
     public FireState getFireState() {
-        return FireState.NON_FIRE_FIELD;
+        return FireState.NON_BURNABLE_FIELD;
 
     }
 
@@ -61,6 +61,11 @@ public class FireStationField implements Field {
     public boolean isFireStation(Player player) {
         return this.owner == player;
     }
+
+    public boolean isFireStation() {
+        return true;
+    }
+
 
     @Override
     public void burn() {

@@ -5,12 +5,15 @@ import edu.kit.informatik.commands.Command;
 import edu.kit.informatik.commands.ParseException;
 import edu.kit.informatik.logic.Board;
 import edu.kit.informatik.logic.FireBreakerGame;
+import edu.kit.informatik.resources.Errors;
 import edu.kit.informatik.ui.BoardParser;
+import edu.kit.informatik.ui.Main;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ExtinguishBasics {
+public class TestExtinguishSameField {
     FireBreakerGame game;
     Board board;
 
@@ -25,17 +28,16 @@ public class ExtinguishBasics {
 
     }
 
-    /*
+
     @Test
     public void basicTest() {
-        assertEquals("w,2", Main.executeCommand(commands, "extinguish A0 0 1"));
-        assertEquals("+,1", Main.executeCommand(commands, "extinguish A0 1 2"));
-        assertEquals("w,0", Main.executeCommand(commands, "extinguish A0 1 2"));
-        assertEquals(String.format(Errors.ACTION_POINT_NEEDED_TO_EXTINGUISH, "A0"),
-            Main.executeCommand(commands, "extinguish A0 2 1"));
+        assertEquals("w,2", Main.executeCommand(commands, "extinguish A0,0,1"));
+        assertEquals("+,1", Main.executeCommand(commands, "extinguish A0,1,2"));
+        assertEquals(String.format(Errors.CANNOT_EXTINGUISH_SAME_FIELD_TWICE),
+            Main.executeCommand(commands, "extinguish A0,1,2"));
+
+
     }
 
 
-
-     */
 }

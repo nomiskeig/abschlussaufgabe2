@@ -1,10 +1,10 @@
 package edu.kit.informatik.logic;
 
 public enum FireState {
-    DRY("d"), WET("w"), LIGHT_FIRE("+"), STRONG_FIRE("*"), NON_FIRE_FIELD("x");
+    DRY("d"), WET("w"), LIGHT_FIRE("+"), STRONG_FIRE("*"), NON_BURNABLE_FIELD("x");
 
 
-    private String displayName;
+    private final String displayName;
 
     FireState(String displayName) {
         this.displayName = displayName;

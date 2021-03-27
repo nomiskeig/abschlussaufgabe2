@@ -19,7 +19,7 @@ public class CoolingPondField implements Field {
 
     @Override
     public FireState getFireState() {
-        return FireState.NON_FIRE_FIELD;
+        return FireState.NON_BURNABLE_FIELD;
     }
 
     @Override
@@ -49,6 +49,11 @@ public class CoolingPondField implements Field {
 
     @Override
     public boolean isFireStation(Player player) {
+        return false;
+    }
+
+    @Override
+    public boolean isFireStation() {
         return false;
     }
 
