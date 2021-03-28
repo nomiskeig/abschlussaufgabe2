@@ -7,17 +7,26 @@ package edu.kit.informatik.resources;
  * @author Simon Giek
  * @version 1.0
  */
-public class Messages {
+public final class Messages {
     /**
      * The OK message.
      */
     public static final String OK = "OK";
+
     /**
      * The message if the game is won.
      */
     public static final String WIN = "win";
+
     /**
      * The message if the game is lost.
      */
     public static final String LOSE = "lose";
+
+    /**
+     * Private Constructor to prevent instantiation.
+     */
+    private Messages() {
+
+    }
 }

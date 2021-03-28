@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class ForestField implements Field {
     private final List<FireEngine> fireEngines;
-
     private final FireState initialState;
     private final FireEngine initialEngine;
     private FireState fireState;

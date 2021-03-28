@@ -12,7 +12,6 @@ package edu.kit.informatik.ui;
  * @version 1.0
  */
 public class Result {
-
     private final ResultType type;
     private final String message;
 

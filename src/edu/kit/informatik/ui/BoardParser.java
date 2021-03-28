@@ -20,15 +20,12 @@ public class BoardParser {
      */
     private static final int MIN_ROWS_AND_COLUMNS = 5;
     private static final int INITIAL_COUNTER = 0;
-
     private static final int OFFSET_1 = 1;
     private static final int OFFSET_2 = 2;
     private static final int INDEX_0 = 0;
     private static final int INDEX_1 = 1;
-
     private static final int VALID_REMAINDER = 0;
     private static final int DIVIDER = 2;
-
     private static final String POND_REGEX = "^L$";
     private static final String ARG_REGEX = "^(?:([^,]+),)+([^,]+)$";
     private static final String SINGLE_ARG_REGEX = "[^,]+";

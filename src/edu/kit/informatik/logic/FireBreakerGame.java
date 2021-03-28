@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class FireBreakerGame implements FireBreaker {
     /**
-     * The cost of a fire engine
+     * The cost of a fire engine.
      */
     public static final int REPUTATION_TO_BUY_ENGINE = 5;
     private static final int DICE_1 = 1;
@@ -24,14 +24,10 @@ public class FireBreakerGame implements FireBreaker {
     private static final int DICE_5 = 5;
     private static final int DICE_6 = 6;
     private static final int MAX_STEPS_ONE_MOVE = 2;
-
-
     private static final int MIN_WATER_TO_EXT = 1;
     private static final int NO_OFFSET = 0;
     private static final int ROW_OFFSET = 1;
     private static final int COLUMN_OFFSET = 1;
-
-
     private final Board board;
 
 

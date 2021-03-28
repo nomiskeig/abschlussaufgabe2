@@ -7,7 +7,7 @@ package edu.kit.informatik.resources;
  * @author Simon Giek
  * @version 1.0
  */
-public class Errors {
+public final class Errors {
     /**
      * Error if the program arguments are invalid.
      */
@@ -264,4 +264,11 @@ public class Errors {
      */
     public static final String CANNOT_PLACE_NEW_ENGINE_ON_FIRE
         = "a new fire engine can't be placed on a burning forest";
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private Errors() {
+
+    }
 }

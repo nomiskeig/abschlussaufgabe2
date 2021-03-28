@@ -11,9 +11,7 @@ import java.util.List;
  * @version 1.0
  */
 public class FireStationField implements Field {
-
     private final String id;
-
     private final Player owner;
 
     /**

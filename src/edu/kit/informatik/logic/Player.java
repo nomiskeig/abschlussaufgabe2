@@ -24,9 +24,7 @@ public enum Player implements Resettable {
      */
     D("D");
     private static final int AMOUNT_NEW_FIRE_ENGINE = 1;
-
     private static final int AMOUNT_NEW_REP_POINT = 1;
-
     private static final int INITIAL_REPUTATION_POINTS = 0;
     private static final int INITIAL_AMOUNT_FIRE_ENGINES = 1;
     private final String name;

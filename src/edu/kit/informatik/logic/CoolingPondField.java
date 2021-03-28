@@ -20,14 +20,12 @@ public class CoolingPondField implements Field {
 
     @Override
     public void resetModified() {
-
     }
 
     @Override
     public FireState getFireState() {
         return FireState.NON_BURNABLE_FIELD;
     }
-
 
     @Override
     public void placeFireEngine(FireEngine fireEngine) throws GameException {
@@ -36,7 +34,6 @@ public class CoolingPondField implements Field {
 
     @Override
     public void removeFireEngine(FireEngine fireEngine) {
-
     }
 
     @Override
@@ -57,12 +54,10 @@ public class CoolingPondField implements Field {
 
     @Override
     public void burn() {
-
     }
 
 
     @Override
-
     public FireState extinguish() throws GameException {
         throw new GameException(Errors.CAN_ONLY_EXTINGUISH_FOREST);
     }
@@ -75,6 +70,5 @@ public class CoolingPondField implements Field {
 
     @Override
     public void reset() {
-        
     }
 }

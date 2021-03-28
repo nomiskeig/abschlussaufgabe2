@@ -11,30 +11,24 @@ import java.util.List;
  * @version 1.0
  */
 public class FireEngine implements Comparable<FireEngine>, Resettable {
-
-    private static final int WATER_AND_ACTION_TO_REMOVE = 1;
     /**
      * The initial amount of actions the fireEngine has each turn.
      */
     private static final int INITIAL_ACTIONS = 3;
+
     /**
      * The initial amount of water the fireEngine has.
      */
     private static final int INITIAL_WATER = 3;
-
+    private static final int WATER_AND_ACTION_TO_REMOVE = 1;
     private final String id;
     private int actions;
-
     private int row;
     private int column;
-
     private final int initialRow;
     private final int initialColumn;
-
     private final Player owningPlayer;
-
     private boolean canMove;
-
     private int water;
 
     /**
