@@ -10,7 +10,9 @@ public interface FireBreaker {
     int buyFireEngine(int row, int column) throws GameException;
 
     String turn() throws GameException;
-    
+
+    void reset();
+
     String showBoard();
 
     String showField(int row, int column) throws GameException;

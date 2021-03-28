@@ -325,6 +325,17 @@ public class Board {
         return fireEnginesOfPlayer;
     }
 
+    /**
+     * Invokes the reset method of each field on the board.
+     */
+    public void reset() {
+        for (Field[] row : this.board) {
+            for (Field field : row) {
+                field.reset();
+            }
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();

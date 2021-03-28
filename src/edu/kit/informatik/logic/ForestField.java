@@ -9,6 +9,8 @@ import java.util.List;
 public class ForestField implements Field {
     private List<FireEngine> fireEngines;
     private FireState fireState;
+    private FireState initialState;
+    private FireEngine initialEngine;
 
     private boolean alreadyModified;
 
@@ -16,12 +18,15 @@ public class ForestField implements Field {
         this.fireEngines = new ArrayList<>();
         this.fireState = initialState;
         this.alreadyModified = false;
+        this.initialState = initialState;
+        this.initialEngine = null;
     }
 
     public ForestField(FireEngine fireEngine) {
-        this.fireState = FireState.DRY;
+        this.fireState = this.initialState = FireState.DRY;
         this.fireEngines = new ArrayList<>();
         this.fireEngines.add(fireEngine);
+        this.initialEngine = fireEngine;
     }
 
     @Override
@@ -124,6 +129,17 @@ public class ForestField implements Field {
                 throw new GameException(Errors.SOMETHING_WRONG);
         }
         return null;
+    }
+
+    @Override
+    public void reset() {
+        this.fireState = this.initialState;
+        this.fireEngines.clear();
+        if (this.initialEngine != null) {
+            initialEngine.gameReset();
+            this.fireEngines.add(initialEngine);
+        }
+
     }
 
 

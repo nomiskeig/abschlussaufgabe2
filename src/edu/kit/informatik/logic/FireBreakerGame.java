@@ -21,9 +21,7 @@ public class FireBreakerGame implements FireBreaker {
     public FireBreakerGame(Board board) {
         this.board = board;
         this.coordinator = new Coordinator();
-        for (Player player : Player.values()) {
-            player.reset();
-        }
+
     }
 
 
@@ -136,6 +134,16 @@ public class FireBreakerGame implements FireBreaker {
         return nextPlayerName;
     }
 
+    @Override
+    public void reset() {
+        this.board.reset();
+        for (Player player : Player.values()) {
+            player.reset();
+        }
+        this.coordinator.reset();
+
+    }
+
 
     @Override
     public String showBoard() {
@@ -197,6 +205,7 @@ public class FireBreakerGame implements FireBreaker {
         for (Player player : Player.values()) {
             if (board.getFireEngines(player).isEmpty()) {
                 nextPlayerDecidedByFireToRoll = coordinator.removePlayer(player);
+                
 
             } else {
                 fireEnginesLeft = true;

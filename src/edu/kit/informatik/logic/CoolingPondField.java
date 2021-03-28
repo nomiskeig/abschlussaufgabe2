@@ -68,6 +68,11 @@ public class CoolingPondField implements Field {
     }
 
     @Override
+    public void reset() {
+
+    }
+
+    @Override
     public String toString() {
         return COOLING_POND_DISPLAY_NAME;
     }

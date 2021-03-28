@@ -29,4 +29,6 @@ public interface Field {
     void burn();
 
     FireState extinguish() throws GameException;
+
+    void reset();
 }

@@ -78,6 +78,11 @@ public class FireStationField implements Field {
     }
 
     @Override
+    public void reset() {
+
+    }
+
+    @Override
     public String toString() {
         return id;
     }

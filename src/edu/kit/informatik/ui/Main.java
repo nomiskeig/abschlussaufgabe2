@@ -38,23 +38,12 @@ public class Main {
         FireBreaker game = new FireBreakerGame(board);
         Command[] commands = Command.getCommands(game);
         while (isRunning) {
-            if (reset) {
-                try {
-                    board = parser.parseAndGetBoard();
-                } catch (ParseException e) {
-                    Terminal.printError(e.getMessage());
-                }
-                game = new FireBreakerGame(board);
-                commands = Command.getCommands(game);
-                reset = false;
-            }
             executeCommand(commands);
         }
 
     }
 
-    //TODO PRIVATE
-    public static void executeCommand(Command[] commands) {
+    private static void executeCommand(Command[] commands) {
         boolean found = false;
         String input = Terminal.readLine();
         for (Command command : commands) {
@@ -64,21 +53,15 @@ public class Main {
                 switch (result.getType()) {
                     case SUCCESS:
                         Terminal.printLine(result.getMessage());
-                        //return result.getMessage();
                         break;
                     case FAILURE:
                         Terminal.printError(result.getMessage());
-                        //return result.getMessage();
                         break;
                     case QUIT:
                         isRunning = false;
                         break;
-                    case RESET:
-                        reset = true;
-                        Terminal.printLine(result.getMessage());
-                        break;
                     default:
-                        Terminal.printError("Error");
+                        Terminal.printError("an unexpected error occurred");
                         break;
                 }
             }

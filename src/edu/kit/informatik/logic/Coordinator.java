@@ -15,6 +15,8 @@ public class Coordinator {
     private Player firstPlayerNextRound;
 
     private Player activePlayer;
+
+    private boolean removedPlayerThisRound;
     private boolean removedStartingPlayerThisRound;
 
     private Map<Player, Player> nextPlayer;
@@ -33,12 +35,28 @@ public class Coordinator {
         this.nextPlayer.put(Player.D, Player.A);
     }
 
+    public void reset() {
+        this.removedStartingPlayerThisRound = false;
+        this.isOver = false;
+        this.activePlayer = Player.A;
+        this.firstPlayerThisRound = Player.A;
+        this.firstPlayerNextRound = Player.B;
+        this.activeRound = 1;
+        this.nextPlayer = new HashMap<>();
+        this.nextPlayer.put(Player.A, Player.B);
+        this.nextPlayer.put(Player.B, Player.C);
+        this.nextPlayer.put(Player.C, Player.D);
+        this.nextPlayer.put(Player.D, Player.A);
+
+    }
+
 
     public Player turn() {
         this.activeRound++;
         // round over
         if (activeRound == this.nextPlayer.size() + 1) {
             this.removedStartingPlayerThisRound = false;
+            this.removedPlayerThisRound = false;
             if (this.nextPlayer.containsKey(firstPlayerThisRound)) {
                 this.firstPlayerThisRound = this.nextPlayer.get(firstPlayerThisRound);
             } else {
@@ -74,7 +92,7 @@ public class Coordinator {
 
     public Player removePlayer(Player player) {
         if (!nextPlayer.containsKey(player)) {
-            return this.removedStartingPlayerThisRound ? this.activePlayer : null;
+            return this.removedPlayerThisRound ? this.activePlayer : null;
         }
         if (this.firstPlayerThisRound == player || this.removedStartingPlayerThisRound) {
 
@@ -87,6 +105,7 @@ public class Coordinator {
             this.removedStartingPlayerThisRound = true;
 
         }
+        this.removedPlayerThisRound = true;
         for (Player playerFromSet : nextPlayer.keySet()) {
             if (nextPlayer.get(playerFromSet) == player) {
                 nextPlayer.put(playerFromSet, nextPlayer.get(player));
@@ -97,7 +116,7 @@ public class Coordinator {
         if (nextPlayer.isEmpty()) {
             this.setOver();
         }
-        return this.removedStartingPlayerThisRound ? this.activePlayer : null;
+        return this.activePlayer;
     }
 
     public void validateCommandPossible() throws GameException {

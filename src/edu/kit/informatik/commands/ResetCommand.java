@@ -35,7 +35,8 @@ public class ResetCommand extends Command {
     @Override
     public Result executeCommand(String command) {
         if (command.matches(EXACT_REGEX)) {
-            return new Result(ResultType.RESET, Messages.OK);
+            this.getGame().reset();
+            return new Result(ResultType.SUCCESS, Messages.OK);
         }
         return new Result(ResultType.FAILURE, Errors.INVALID_INPUT);
     }

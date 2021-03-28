@@ -17,6 +17,9 @@ public class FireEngine implements Comparable<FireEngine> {
     private int row;
     private int column;
 
+    private final int initialRow;
+    private final int initialColumn;
+
     private Player owningPlayer;
 
     private boolean canMove;
@@ -29,8 +32,8 @@ public class FireEngine implements Comparable<FireEngine> {
     public FireEngine(String id, int row, int column) {
         this.canMove = true;
         this.id = id;
-        this.row = row;
-        this.column = column;
+        this.row = this.initialRow = row;
+        this.column = this.initialColumn = column;
         this.owningPlayer = Player.getByName(id.substring(0, 1));
         this.actions = INITIAL_ACTIONS;
         this.water = INITIAL_WATER;
@@ -73,7 +76,7 @@ public class FireEngine implements Comparable<FireEngine> {
     public boolean canMove() {
         return (this.canMove);
     }
-    
+
 
     public void moved() {
         this.actions -= 1;
@@ -107,6 +110,14 @@ public class FireEngine implements Comparable<FireEngine> {
         this.canMove = true;
         this.actions = INITIAL_ACTIONS;
         this.extinguishedFields.clear();
+    }
+
+    public void gameReset() {
+        this.reset();
+        this.water = INITIAL_WATER;
+        this.row = this.initialRow;
+        this.column = this.initialColumn;
+
     }
 
 
