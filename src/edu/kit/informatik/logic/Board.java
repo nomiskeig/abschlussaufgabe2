@@ -16,7 +16,7 @@ public class Board {
     /**
      * The array containing all the fields of the board.
      */
-    private Field[][] board;
+    private final Field[][] board;
 
     /**
      * The constructor.
@@ -183,6 +183,11 @@ public class Board {
 
     }
 
+    /**
+     * Checks whether the game is won.
+     *
+     * @return true if the game is won, false if it is not.
+     */
     public boolean isWon() {
         boolean win = true;
         for (Field[] row : this.board) {
@@ -249,6 +254,16 @@ public class Board {
         }
     }
 
+    /**
+     * Expands the fire in the direction specified by the parameters. If the withReset parameter is true, all the fields
+     * are reset so they can be modified for the fire-to-roll command the next round. Each field can only be modified a
+     * maximum of one for each fire-to-roll command, so not resetting enables the usage of this method for expanding the
+     * fire in all directions and not just in one, that's why the third parameter is required.
+     *
+     * @param rowOffset    the offset of the row to expand to.
+     * @param columnOffset the offset of the column to expand to.
+     * @param withReset    the fields are reset for the next fire-to-roll command if true, and are not if false.
+     */
     public void expandFire(int rowOffset, int columnOffset, boolean withReset) {
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[0].length; j++) {
@@ -273,7 +288,14 @@ public class Board {
 
     }
 
-
+    /**
+     * Searches trough all the fireEngines of the specified player and returns the one matching the given id.
+     *
+     * @param player the player the fireEngine belongs to.
+     * @param id     the id of the fireEngine.
+     * @return the FireEngine matching the id, if there is one matching.
+     * @throws GameException if there is no FireEngine of the specified player with the specified id.
+     */
     public FireEngine getFireEngineOfPlayer(Player player, String id) throws GameException {
         for (FireEngine fe : this.getFireEngines(player)) {
             if (fe.getId().equals(id)) {
@@ -283,6 +305,12 @@ public class Board {
         throw new GameException(String.format(Errors.NO_FIRE_ENGINE, id));
     }
 
+    /**
+     * Searches all the fields for fireEngines belonging to the specified player and adds them to a list.
+     *
+     * @param player the player to get the fireEngines of.
+     * @return a list containing all the fireEngines of the specified player still in the game.
+     */
     public List<FireEngine> getFireEngines(Player player) {
         List<FireEngine> fireEnginesOfPlayer = new ArrayList<>();
         for (Field[] row : this.board) {
