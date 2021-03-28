@@ -4,6 +4,12 @@ import edu.kit.informatik.resources.Errors;
 
 import java.util.List;
 
+/**
+ * This class models a coolingPond field, implementing the base field.
+ *
+ * @author Simon Giek
+ * @version 1.0
+ */
 public class CoolingPondField implements Field {
     private static final String COOLING_POND_DISPLAY_NAME = "L";
 
@@ -22,10 +28,6 @@ public class CoolingPondField implements Field {
         return FireState.NON_BURNABLE_FIELD;
     }
 
-    @Override
-    public void setFireState(FireState fs) {
-
-    }
 
     @Override
     public void placeFireEngine(FireEngine fireEngine) throws GameException {
@@ -52,28 +54,27 @@ public class CoolingPondField implements Field {
         return false;
     }
 
-    @Override
-    public boolean isFireStation() {
-        return false;
-    }
 
     @Override
     public void burn() {
 
     }
 
+
     @Override
+
     public FireState extinguish() throws GameException {
         throw new GameException(Errors.CAN_ONLY_EXTINGUISH_FOREST);
     }
 
-    @Override
-    public void reset() {
-
-    }
 
     @Override
     public String toString() {
         return COOLING_POND_DISPLAY_NAME;
+    }
+
+    @Override
+    public void reset() {
+        
     }
 }

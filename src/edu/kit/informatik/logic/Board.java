@@ -167,15 +167,12 @@ public class Board {
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = column - 1; j <= column + 1; j++) {
                 if (isValidFieldIndex(i, j)) {
-                    if (player == null) {
-                        if (this.board[i][j].isFireStation() || (withPond && this.board[i][j].isPond())) {
-                            return true;
-                        }
 
-                    }
                     if (this.board[i][j].isFireStation(player) || (withPond && this.board[i][j].isPond())) {
                         return true;
                     }
+                    
+
                 }
             }
         }

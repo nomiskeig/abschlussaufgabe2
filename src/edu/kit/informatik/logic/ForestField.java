@@ -6,14 +6,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class models the forest field implementing the Field interface.
+ *
+ * @author Simon Giek
+ * @version 1.0
+ */
 public class ForestField implements Field {
-    private List<FireEngine> fireEngines;
-    private FireState fireState;
-    private FireState initialState;
-    private FireEngine initialEngine;
+    private final List<FireEngine> fireEngines;
 
+    private final FireState initialState;
+    private final FireEngine initialEngine;
+    private FireState fireState;
     private boolean alreadyModified;
 
+    /**
+     * The constructor if no fireEngine is initially placed on the field.
+     *
+     * @param initialState the initial FireSate of the field.
+     */
     public ForestField(FireState initialState) {
         this.fireEngines = new ArrayList<>();
         this.fireState = initialState;
@@ -22,8 +33,14 @@ public class ForestField implements Field {
         this.initialEngine = null;
     }
 
+    /**
+     * The constructor there is a fireEngine placed on the field initially.
+     *
+     * @param fireEngine the fireEngine initially placed on the field.
+     */
     public ForestField(FireEngine fireEngine) {
-        this.fireState = this.initialState = FireState.DRY;
+        this.fireState = FireState.DRY;
+        this.initialState = FireState.DRY;
         this.fireEngines = new ArrayList<>();
         this.fireEngines.add(fireEngine);
         this.initialEngine = fireEngine;
@@ -44,10 +61,6 @@ public class ForestField implements Field {
         return this.fireState;
     }
 
-    @Override
-    public void setFireState(FireState fs) {
-        this.fireState = fs;
-    }
 
     @Override
     public void placeFireEngine(FireEngine fireEngine) throws GameException {
@@ -86,10 +99,6 @@ public class ForestField implements Field {
         return false;
     }
 
-    @Override
-    public boolean isFireStation() {
-        return false;
-    }
 
     @Override
     public void burn() {
@@ -101,10 +110,10 @@ public class ForestField implements Field {
             case LIGHT_FIRE:
                 this.fireState = FireState.STRONG_FIRE;
                 break;
-            case STRONG_FIRE:
-                break;
             case DRY:
                 this.fireState = FireState.LIGHT_FIRE;
+                break;
+            default:
                 break;
 
         }
@@ -118,15 +127,17 @@ public class ForestField implements Field {
         switch (this.fireState) {
             case DRY:
             case LIGHT_FIRE:
-                this.setFireState(FireState.WET);
+                this.fireState = FireState.WET;
                 return FireState.WET;
             case STRONG_FIRE:
-                this.setFireState(FireState.LIGHT_FIRE);
+                this.fireState = FireState.LIGHT_FIRE;
                 return FireState.LIGHT_FIRE;
             case WET:
                 throw new GameException(Errors.CANNOT_EXTINGUISH_WET_FOREST);
             case NON_BURNABLE_FIELD:
                 throw new GameException(Errors.SOMETHING_WRONG);
+            default:
+                break;
         }
         return null;
     }
@@ -136,7 +147,7 @@ public class ForestField implements Field {
         this.fireState = this.initialState;
         this.fireEngines.clear();
         if (this.initialEngine != null) {
-            initialEngine.gameReset();
+            initialEngine.reset();
             this.fireEngines.add(initialEngine);
         }
 
@@ -149,7 +160,7 @@ public class ForestField implements Field {
         result.append(this.fireState.getDisplayName());
         Collections.sort(fireEngines);
         for (FireEngine fe : fireEngines) {
-            result.append("," + fe.getId());
+            result.append(",").append(fe.getId());
         }
         return result.toString();
     }

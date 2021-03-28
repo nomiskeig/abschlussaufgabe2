@@ -1,7 +1,28 @@
 package edu.kit.informatik.logic;
 
-public enum Player {
-    A("A"), B("B"), C("C"), D("D");
+/**
+ * This enum models the players who are playing the game.
+ *
+ * @author Simon Giek
+ * @version 1.0
+ */
+public enum Player implements Resettable {
+    /**
+     * Player A
+     */
+    A("A"),
+    /**
+     * Player B
+     */
+    B("B"),
+    /**
+     * Player C
+     */
+    C("C"),
+    /**
+     * Player D
+     */
+    D("D");
 
     private static final int INITIAL_REPUTATION_POINTS = 0;
     private static final int INITIAL_AMOUNT_FIRE_ENGINES = 1;
@@ -9,13 +30,23 @@ public enum Player {
     private int reputationPoints;
     private int amountOfFireEngines;
 
-
+    /**
+     * The constructor.
+     *
+     * @param name the name of the player.
+     */
     Player(String name) {
         this.name = name;
         this.amountOfFireEngines = INITIAL_AMOUNT_FIRE_ENGINES;
         this.reputationPoints = INITIAL_REPUTATION_POINTS;
     }
 
+    /**
+     * Searches all the players for the one with the matching name and returns it.
+     *
+     * @param name the of the player to search.
+     * @return the player with the matching name, null if there is no such player.
+     */
     public static Player getByName(String name) {
         for (Player player : Player.values()) {
             if (player.name.equals(name)) {
@@ -25,35 +56,51 @@ public enum Player {
         return null;
     }
 
+    /**
+     * Getter for the name of the player.
+     *
+     * @return the name of the player.
+     */
     public String getName() {
         return name;
     }
 
-
+    /**
+     * Removes five reputation points from the player and increases the amount of fireEngines of this player by one.
+     */
     public void boughtEngine() {
         this.reputationPoints -= 5;
         this.amountOfFireEngines += 1;
     }
 
-    public void reset() {
-        this.reputationPoints = INITIAL_REPUTATION_POINTS;
-        this.amountOfFireEngines = INITIAL_AMOUNT_FIRE_ENGINES;
-    }
-
+    /**
+     * Getter for the reputation points the player currently has.
+     *
+     * @return the amount of reputation points of the player.
+     */
     public int getReputationPoints() {
         return reputationPoints;
     }
 
-    public void setReputationPoints(int reputationPoints) {
-        this.reputationPoints = reputationPoints;
-    }
-
+    /**
+     * Getter for the amount of fireEngines the player currently has.
+     *
+     * @return the amount of fire engines of the player.
+     */
     public int getAmountOfFireEngines() {
         return amountOfFireEngines;
     }
 
-
+    /**
+     * Adds an reputation point.
+     */
     public void addReputationPoint() {
         this.reputationPoints += 1;
+    }
+
+    @Override
+    public void reset() {
+        this.reputationPoints = INITIAL_REPUTATION_POINTS;
+        this.amountOfFireEngines = INITIAL_AMOUNT_FIRE_ENGINES;
     }
 }

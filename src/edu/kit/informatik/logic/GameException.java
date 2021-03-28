@@ -1,5 +1,11 @@
 package edu.kit.informatik.logic;
 
+/**
+ * This class models the game exception. It is thrown when an error occurs during execution of an command.
+ *
+ * @author Simon Giek
+ * @version 1.0
+ */
 public class GameException extends Exception {
     /**
      * The default constructor.

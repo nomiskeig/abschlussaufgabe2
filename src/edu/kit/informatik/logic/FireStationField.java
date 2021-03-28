@@ -4,13 +4,23 @@ import edu.kit.informatik.resources.Errors;
 
 import java.util.List;
 
-
+/**
+ * This class models the fireStation field implementing the Field interface.
+ *
+ * @author Simon Giek
+ * @version 1.0
+ */
 public class FireStationField implements Field {
 
     private final String id;
 
     private final Player owner;
 
+    /**
+     * The constructor.
+     *
+     * @param id the id of the fireStation.
+     */
     public FireStationField(String id) {
         this.id = id;
         this.owner = Player.getByName(id);
@@ -32,10 +42,6 @@ public class FireStationField implements Field {
 
     }
 
-    @Override
-    public void setFireState(FireState fs) {
-
-    }
 
     @Override
     public void placeFireEngine(FireEngine fireEngine) throws GameException {
@@ -59,11 +65,10 @@ public class FireStationField implements Field {
 
     @Override
     public boolean isFireStation(Player player) {
+        if (player == null) {
+            return true;
+        }
         return this.owner == player;
-    }
-
-    public boolean isFireStation() {
-        return true;
     }
 
 

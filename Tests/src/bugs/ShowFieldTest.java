@@ -3,7 +3,7 @@ package bugs;
 import edu.kit.informatik.logic.Board;
 import edu.kit.informatik.logic.FireBreakerGame;
 import edu.kit.informatik.logic.GameException;
-import edu.kit.informatik.commands.ParseException;
+import edu.kit.informatik.ui.ParseException;
 import edu.kit.informatik.resources.Errors;
 import edu.kit.informatik.ui.BoardParser;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,28 +1,44 @@
 package edu.kit.informatik.ui;
 
 
-import edu.kit.informatik.commands.ParseException;
 import edu.kit.informatik.logic.*;
 import edu.kit.informatik.resources.Errors;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class models a parser, which is used to create a board of the fireBreaker game based on the program arguments.
+ *
+ * @author Simon Giek
+ * @version 1.0
+ */
 public class BoardParser {
-    private final static String POND_REGEX = "^L$";
-    private final static String ARG_REGEX = "^(?:([^,]+),)+([^,]+)$";
-    private final static String SINGLE_ARG_REGEX = "[^,]+";
+    private static final String POND_REGEX = "^L$";
+    private static final String ARG_REGEX = "^(?:([^,]+),)+([^,]+)$";
+    private static final String SINGLE_ARG_REGEX = "[^,]+";
     private final String boardString;
     private boolean hasLightBurningField;
     private boolean hasStrongBurningField;
     private int rows;
     private int columns;
 
-
+    /**
+     * The constructor.
+     *
+     * @param boardString the textual representation of the board.
+     */
     public BoardParser(String boardString) {
         this.boardString = boardString;
     }
 
+    /**
+     * Parses boardString and validates it. If the textual representation is valid, creates a new Board instance with
+     * based on the textual representation.
+     *
+     * @return the board based on the textual representation.
+     * @throws ParseException if any of the rules for the board specified by the assignment are broken.
+     */
     public Board parseAndGetBoard() throws ParseException {
         if (!this.boardString.matches(ARG_REGEX)) {
             throw new ParseException(Errors.INVALID_ARGS);
@@ -43,6 +59,9 @@ public class BoardParser {
         Field[][] board = new Field[this.rows][this.columns];
         while (m.find()) {
             counter++;
+            if (counter > rows * columns) {
+                break;
+            }
             int currentRow = (counter - 1) / this.columns;
             int currentColumn = ((counter - 1) % this.columns);
             if (currentRow == 0 && currentColumn == 0) {
@@ -71,6 +90,10 @@ public class BoardParser {
             } else {
                 board[currentRow][currentColumn] = parseForestField(m.group());
             }
+        }
+
+        if (counter != rows * columns) {
+            throw new ParseException(String.format(Errors.INVALID_AMOUNT_OF_ARGUMENTS, counter, rows * columns));
         }
         if (!this.hasStrongBurningField) {
             throw new ParseException(Errors.BOARD_MISSING_STRONG_FIRE);

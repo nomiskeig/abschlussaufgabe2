@@ -6,7 +6,12 @@ import edu.kit.informatik.resources.Messages;
 import java.util.Collections;
 import java.util.List;
 
-
+/**
+ * This class implements FireBreaker.
+ *
+ * @author Simon Giek
+ * @version 1.0
+ */
 public class FireBreakerGame implements FireBreaker {
 
     private static final int REPUTATION_TO_BUY_ENGINE = 5;
@@ -17,7 +22,11 @@ public class FireBreakerGame implements FireBreaker {
 
     private final Coordinator coordinator;
 
-
+    /**
+     * The constructor.
+     *
+     * @param board the board of the game.
+     */
     public FireBreakerGame(Board board) {
         this.board = board;
         this.coordinator = new Coordinator();
@@ -33,7 +42,7 @@ public class FireBreakerGame implements FireBreaker {
         if (!fe.canMove()) {
             throw new GameException(String.format(Errors.ALREADY_MADE_ACTION, id));
         }
-        if (fe.getActions() < 1) {
+        if (!fe.enoughActionPoints()) {
             throw new GameException(Errors.ACTION_POINT_NEEDED_TO_MOVE);
         }
         int initialRow = fe.getRow();
@@ -60,7 +69,7 @@ public class FireBreakerGame implements FireBreaker {
         if (fe.getRow() == row && fe.getColumn() == column) {
             throw new GameException(Errors.CANNOT_EXTINGUISH_OWN_FIELD);
         }
-        if (fe.getActions() < 1) {
+        if (!fe.enoughActionPoints()) {
             throw new GameException(Errors.ACTION_POINT_NEEDED_TO_EXTINGUISH);
         }
         if (fe.getWater() < 1) {
@@ -127,7 +136,7 @@ public class FireBreakerGame implements FireBreaker {
             // reset fire engines
             for (Player player : Player.values()) {
                 for (FireEngine fe : this.board.getFireEngines(player)) {
-                    fe.reset();
+                    fe.turnReset();
                 }
             }
         }
@@ -205,7 +214,7 @@ public class FireBreakerGame implements FireBreaker {
         for (Player player : Player.values()) {
             if (board.getFireEngines(player).isEmpty()) {
                 nextPlayerDecidedByFireToRoll = coordinator.removePlayer(player);
-                
+
 
             } else {
                 fireEnginesLeft = true;
