@@ -44,7 +44,7 @@ public class RefillCommand extends Command {
         if (m.matches()) {
             int result;
             try {
-                result = this.getGame().refill(m.group(1));
+                result = this.getGame().refill(m.group(FIRST_GROUP));
             } catch (GameException e) {
                 return new Result(ResultType.FAILURE, e.getMessage());
             }

@@ -13,6 +13,15 @@ import java.util.List;
  * @version 1.0
  */
 public class Board {
+
+    private static final int MIN_ROW_AND_COLUMN = 0;
+
+    private static final int ONE_OFFSET = 1;
+
+    private static final int ZERO_INDEX = 0;
+
+    private static final int NO_REMAINING_STEPS = 0;
+
     /**
      * The array containing all the fields of the board.
      */
@@ -103,12 +112,12 @@ public class Board {
      */
     public void validateFieldIndex(int row, int column) throws GameException {
         int rows = this.board.length;
-        int columns = this.board[0].length;
-        if (row < 0 || row >= rows) {
-            throw new GameException(String.format(Errors.INVALID_ROW, rows - 1, row));
+        int columns = this.board[ZERO_INDEX].length;
+        if (row < MIN_ROW_AND_COLUMN || row >= rows) {
+            throw new GameException(String.format(Errors.INVALID_ROW, rows - ONE_OFFSET, row));
         }
-        if (column < 0 || column >= columns) {
-            throw new GameException(String.format(Errors.INVALID_COLUMN, columns - 1, column));
+        if (column < MIN_ROW_AND_COLUMN || column >= columns) {
+            throw new GameException(String.format(Errors.INVALID_COLUMN, columns - ONE_OFFSET, column));
         }
     }
 
@@ -121,8 +130,8 @@ public class Board {
      */
     private boolean isValidFieldIndex(int row, int column) {
         int rows = this.board.length;
-        int columns = this.board[0].length;
-        return row >= 0 && row < rows && column >= 0 && column < columns;
+        int columns = this.board[ZERO_INDEX].length;
+        return row >= MIN_ROW_AND_COLUMN && row < rows && column >= MIN_ROW_AND_COLUMN && column < columns;
     }
 
     /**
@@ -137,8 +146,8 @@ public class Board {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j = j + 2) {
                 int k = j;
-                if (i != 0) {
-                    k = 0;
+                if (i != ZERO_INDEX) {
+                    k = ZERO_INDEX;
                 }
                 int newRow = fe.getRow() + i;
                 int newColumn = fe.getColumn() + k;
@@ -171,7 +180,7 @@ public class Board {
                     if (this.board[i][j].isFireStation(player) || (withPond && this.board[i][j].isPond())) {
                         return true;
                     }
-                    
+
 
                 }
             }
@@ -225,15 +234,15 @@ public class Board {
             fe.moved();
             return;
         }
-        if (remainingSteps == 0) {
+        if (remainingSteps == NO_REMAINING_STEPS) {
             return;
         }
         // check the four fields to which the engine can theoretically move in one step
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j = j + 2) {
                 int k = j;
-                if (i != 0) {
-                    k = 0;
+                if (i != ZERO_INDEX) {
+                    k = ZERO_INDEX;
                 }
                 int newRow = fromRow + i;
                 int newColumn = fromColumn + k;
@@ -241,10 +250,10 @@ public class Board {
                     newField = this.board[newRow][newColumn];
                     // this check is required in order to get the correct error message
                     if (newRow == toRow && newColumn == toColumn) {
-                        move(fe, newRow, newColumn, toRow, toColumn, remainingSteps - 1);
+                        move(fe, newRow, newColumn, toRow, toColumn, remainingSteps - ONE_OFFSET);
                     } else if (!(newField.getFireState() == FireState.NON_BURNABLE_FIELD
                         || newField.getFireState() == FireState.STRONG_FIRE)) {
-                        move(fe, newRow, newColumn, toRow, toColumn, remainingSteps - 1);
+                        move(fe, newRow, newColumn, toRow, toColumn, remainingSteps - ONE_OFFSET);
                     }
                 }
             }
@@ -263,7 +272,7 @@ public class Board {
      */
     public void expandFire(int rowOffset, int columnOffset, boolean withReset) {
         for (int i = 0; i < this.board.length; i++) {
-            for (int j = 0; j < this.board[0].length; j++) {
+            for (int j = 0; j < this.board[ZERO_INDEX].length; j++) {
                 if (board[i][j].getFireState() == FireState.STRONG_FIRE && !board[i][j].alreadyModified()) {
                     if (isValidFieldIndex(i + rowOffset, j + columnOffset) && !board[i + rowOffset][j + columnOffset]
                         .alreadyModified()
@@ -346,10 +355,10 @@ public class Board {
                 }
                 result.append(",");
             }
-            result = new StringBuilder(result.substring(0, result.length() - 1));
+            result = new StringBuilder(result.substring(ZERO_INDEX, result.length() - ONE_OFFSET));
             result.append("\n");
         }
-        return result.substring(0, result.length() - 1);
+        return result.substring(ZERO_INDEX, result.length() - ONE_OFFSET);
     }
 
 }

@@ -41,7 +41,7 @@ public class FireToRollCommand extends Command {
         if (m.matches()) {
             String result;
             try {
-                int dice = Integer.parseInt(m.group(1));
+                int dice = Integer.parseInt(m.group(FIRST_GROUP));
                 result = this.getGame().fireToRoll(dice);
             } catch (NumberFormatException e) {
                 return new Result(ResultType.FAILURE, Errors.NO_INTEGER);

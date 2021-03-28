@@ -13,8 +13,23 @@ import java.util.List;
  * @version 1.0
  */
 public class FireBreakerGame implements FireBreaker {
+    private static final int DICE_1 = 1;
+    private static final int DICE_2 = 2;
+    private static final int DICE_3 = 3;
+    private static final int DICE_4 = 4;
+    private static final int DICE_5 = 5;
+    private static final int DICE_6 = 6;
+    private static final int MAX_STEPS_ONE_MOVE = 2;
 
-    private static final int REPUTATION_TO_BUY_ENGINE = 5;
+
+    private static final int MIN_WATER_TO_EXT = 1;
+    private static final int NO_OFFSET = 0;
+    private static final int ROW_OFFSET = 1;
+    private static final int COLUMN_OFFSET = 1;
+    /**
+     * The cost of a fire engine
+     */
+    public static final int REPUTATION_TO_BUY_ENGINE = 5;
 
 
     private final Board board;
@@ -50,7 +65,7 @@ public class FireBreakerGame implements FireBreaker {
         if (initialRow == row && initialColumn == column) {
             throw new GameException(Errors.ENGINE_CAN_NOT_STAY_ON_SAME_FIELD);
         }
-        this.board.move(fe, initialRow, initialColumn, row, column, 2);
+        this.board.move(fe, initialRow, initialColumn, row, column, MAX_STEPS_ONE_MOVE);
         if (initialRow == fe.getRow() && initialColumn == fe.getColumn()) {
             throw new GameException(String.format(Errors.NO_PATH, initialRow, initialColumn, row, column));
         }
@@ -72,7 +87,7 @@ public class FireBreakerGame implements FireBreaker {
         if (!fe.enoughActionPoints()) {
             throw new GameException(Errors.ACTION_POINT_NEEDED_TO_EXTINGUISH);
         }
-        if (fe.getWater() < 1) {
+        if (fe.getWater() < MIN_WATER_TO_EXT) {
             throw new GameException(Errors.WATER_NEEDED_TO_EXTINGUISH);
         }
         if (board.isDirectlyAdjacent(fe, row, column)) {
@@ -185,25 +200,25 @@ public class FireBreakerGame implements FireBreaker {
         this.coordinator.canRollFire();
 
         switch (dice) {
-            case 1:
-                board.expandFire(-1, 0, false);
-                board.expandFire(0, 1, false);
-                board.expandFire(1, 0, false);
-                board.expandFire(0, -1, true);
+            case DICE_1:
+                board.expandFire(-ROW_OFFSET, NO_OFFSET, false);
+                board.expandFire(NO_OFFSET, COLUMN_OFFSET, false);
+                board.expandFire(ROW_OFFSET, NO_OFFSET, false);
+                board.expandFire(NO_OFFSET, -COLUMN_OFFSET, true);
                 break;
-            case 2:
-                board.expandFire(-1, 0, true);
+            case DICE_2:
+                board.expandFire(-ROW_OFFSET, NO_OFFSET, true);
                 break;
-            case 3:
-                board.expandFire(0, 1, true);
+            case DICE_3:
+                board.expandFire(NO_OFFSET, COLUMN_OFFSET, true);
                 break;
-            case 4:
-                board.expandFire(1, 0, true);
+            case DICE_4:
+                board.expandFire(ROW_OFFSET, NO_OFFSET, true);
                 break;
-            case 5:
-                board.expandFire(0, -1, true);
+            case DICE_5:
+                board.expandFire(NO_OFFSET, -COLUMN_OFFSET, true);
                 break;
-            case 6:
+            case DICE_6:
                 break;
             default:
                 throw new GameException(String.format(Errors.NO_DICE_NUMBER, dice));

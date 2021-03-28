@@ -44,14 +44,14 @@ public class MoveCommand extends Command {
         int column;
         if (m.matches()) {
             try {
-                row = Integer.parseInt(m.group(2));
-                column = Integer.parseInt(m.group(3));
+                row = Integer.parseInt(m.group(Command.SECOND_GROUP));
+                column = Integer.parseInt(m.group(Command.THIRD_GROUP));
             } catch (NumberFormatException e) {
                 return new Result(ResultType.FAILURE, Errors.NO_INTEGER);
             }
 
             try {
-                this.getGame().move(m.group(1), row, column);
+                this.getGame().move(m.group(Command.FIRST_GROUP), row, column);
             } catch (GameException e) {
                 return new Result(ResultType.FAILURE, e.getMessage());
             }

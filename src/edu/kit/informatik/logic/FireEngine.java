@@ -11,6 +11,8 @@ import java.util.List;
  * @version 1.0
  */
 public class FireEngine implements Comparable<FireEngine>, Resettable {
+
+    private static final int WATER_AND_ACTION_TO_REMOVE = 1;
     /**
      * The initial amount of actions the fireEngine has each turn.
      */
@@ -29,7 +31,7 @@ public class FireEngine implements Comparable<FireEngine>, Resettable {
     private final int initialRow;
     private final int initialColumn;
 
-    private Player owningPlayer;
+    private final Player owningPlayer;
 
     private boolean canMove;
 
@@ -38,7 +40,7 @@ public class FireEngine implements Comparable<FireEngine>, Resettable {
     /**
      * A list of pairs containing integers, keeping track of all the fields the fireEngine has already extinguished.
      */
-    private List<Pair<Integer, Integer>> extinguishedFields;
+    private final List<Pair<Integer, Integer>> extinguishedFields;
 
 
     /**
@@ -148,7 +150,7 @@ public class FireEngine implements Comparable<FireEngine>, Resettable {
      * Removes an action point, because the engine moves.
      */
     public void moved() {
-        this.actions -= 1;
+        this.actions -= WATER_AND_ACTION_TO_REMOVE;
     }
 
     /**
@@ -156,7 +158,7 @@ public class FireEngine implements Comparable<FireEngine>, Resettable {
      */
     public void refill() {
         this.water = INITIAL_WATER;
-        this.actions -= 1;
+        this.actions -= WATER_AND_ACTION_TO_REMOVE;
         this.canMove = false;
     }
 
@@ -168,10 +170,7 @@ public class FireEngine implements Comparable<FireEngine>, Resettable {
      * @return true if the engine did already extinguish that field, false if it did not.
      */
     public boolean alreadyExtinguished(int row, int column) {
-        if (this.extinguishedFields.contains(new Pair<>(row, column))) {
-            return true;
-        }
-        return false;
+        return this.extinguishedFields.contains(new Pair<>(row, column));
     }
 
 
@@ -192,8 +191,8 @@ public class FireEngine implements Comparable<FireEngine>, Resettable {
      * @param column the column of the field extinguished.
      */
     public void extinguished(int row, int column) {
-        this.actions = this.actions - 1;
-        this.water = this.water - 1;
+        this.actions -= WATER_AND_ACTION_TO_REMOVE;
+        this.water -= WATER_AND_ACTION_TO_REMOVE;
         this.canMove = false;
         this.extinguishedFields.add(new Pair<>(row, column));
     }

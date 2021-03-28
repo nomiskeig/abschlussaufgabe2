@@ -13,7 +13,6 @@ import edu.kit.informatik.resources.Errors;
  */
 public final class Main {
     private static boolean isRunning = true;
-    private static boolean reset = false;
 
     /**
      * Private constructor to prevent instantiation.

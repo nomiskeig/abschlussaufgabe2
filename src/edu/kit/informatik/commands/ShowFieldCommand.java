@@ -44,8 +44,8 @@ public class ShowFieldCommand extends Command {
         int column;
         if (m.matches()) {
             try {
-                row = Integer.parseInt(m.group(1));
-                column = Integer.parseInt(m.group(2));
+                row = Integer.parseInt(m.group(FIRST_GROUP));
+                column = Integer.parseInt(m.group(SECOND_GROUP));
             } catch (NumberFormatException e) {
                 return new Result(ResultType.FAILURE, Errors.NO_INTEGER);
             }

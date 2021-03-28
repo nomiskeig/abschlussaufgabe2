@@ -14,6 +14,10 @@ import java.util.Map;
  * @version 1.0
  */
 public class Coordinator implements Resettable {
+    private static final int NEW_ROUND = 0;
+    private static final int FIRST_ROUND = 1;
+
+    private static final int TURN_OFFSET = 1;
     private int activeRound;
     private boolean isOver;
     private Player firstPlayerThisRound;
@@ -32,7 +36,7 @@ public class Coordinator implements Resettable {
         this.activePlayer = Player.A;
         this.firstPlayerThisRound = Player.A;
         this.firstPlayerNextRound = Player.B;
-        this.activeRound = 1;
+        this.activeRound = FIRST_ROUND;
         this.nextPlayer = new HashMap<>();
         this.nextPlayer.put(Player.A, Player.B);
         this.nextPlayer.put(Player.B, Player.C);
@@ -47,7 +51,7 @@ public class Coordinator implements Resettable {
         this.activePlayer = Player.A;
         this.firstPlayerThisRound = Player.A;
         this.firstPlayerNextRound = Player.B;
-        this.activeRound = 1;
+        this.activeRound = FIRST_ROUND;
         this.nextPlayer.clear();
         this.nextPlayer.put(Player.A, Player.B);
         this.nextPlayer.put(Player.B, Player.C);
@@ -57,14 +61,14 @@ public class Coordinator implements Resettable {
     }
 
     /**
-     * Manages the the turn command. Advances the current round, and resets the round correctly if the round is over.
+     * Manages the the turn command. Advances the current turn, and resets the round correctly if the round is over.
      *
      * @return the next active player after the command.
      */
     public Player turn() {
         this.activeRound++;
         // round over
-        if (activeRound == this.nextPlayer.size() + 1) {
+        if (activeRound == this.nextPlayer.size() + TURN_OFFSET) {
             this.removedStartingPlayerThisRound = false;
             this.removedPlayerThisRound = false;
             if (this.nextPlayer.containsKey(firstPlayerThisRound)) {
@@ -73,7 +77,7 @@ public class Coordinator implements Resettable {
                 this.firstPlayerThisRound = this.firstPlayerNextRound;
             }
             this.activePlayer = firstPlayerThisRound;
-            this.activeRound = 0;
+            this.activeRound = NEW_ROUND;
             return firstPlayerThisRound;
         }
         if (this.nextPlayer.containsKey(activePlayer)) {
@@ -107,7 +111,7 @@ public class Coordinator implements Resettable {
      * @return true if the round new, false if it is not.
      */
     public boolean isNewRound() {
-        return this.activeRound == 0;
+        return this.activeRound == NEW_ROUND;
     }
 
     /**
@@ -152,7 +156,7 @@ public class Coordinator implements Resettable {
      */
     public void validateCommandPossible() throws GameException {
         this.validateNotOver();
-        if (this.activeRound == 0) {
+        if (this.activeRound == NEW_ROUND) {
             throw new GameException(Errors.FIRE_TO_ROLL_NEEDED);
         }
     }
@@ -164,7 +168,7 @@ public class Coordinator implements Resettable {
      */
     public void canRollFire() throws GameException {
         this.validateNotOver();
-        if (this.activeRound != 0) {
+        if (this.activeRound != NEW_ROUND) {
             throw new GameException(Errors.NO_FIRE_TO_ROLL_POSSIBLE);
         }
     }
@@ -173,7 +177,7 @@ public class Coordinator implements Resettable {
      * Sets the currently active round to 1, which indicates that fire was rolled.
      */
     public void rolledFire() {
-        this.activeRound = 1;
+        this.activeRound = FIRST_ROUND;
     }
 
     /**

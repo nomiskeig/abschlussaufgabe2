@@ -10,6 +10,22 @@ import edu.kit.informatik.ui.Result;
  * @version 1.0
  */
 public abstract class Command {
+
+    /**
+     * The index of the first group of a matched matcher.
+     */
+    public static final int FIRST_GROUP = 1;
+
+    /**
+     * The index of the second group of a matched matcher.
+     */
+    public static final int SECOND_GROUP = 2;
+
+    /**
+     * The index of the third group of a matched matcher.
+     */
+    public static final int THIRD_GROUP = 3;
+
     /**
      * The regex for two indices in a row.
      */
@@ -23,7 +39,7 @@ public abstract class Command {
     /**
      * The instance of the game the command is instantiated with.
      */
-    private FireBreaker game;
+    private final FireBreaker game;
 
     /**
      * The constructor.

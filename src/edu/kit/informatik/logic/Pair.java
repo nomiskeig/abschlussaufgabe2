@@ -12,7 +12,14 @@ import java.util.Objects;
  * @version 1.0
  */
 public class Pair<F, S> {
+    /**
+     * The first element
+     */
     private F first;
+
+    /**
+     * The second element
+     */
     private S second;
 
     /**
@@ -64,8 +71,10 @@ public class Pair<F, S> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Pair<?, ?> pair = (Pair<?, ?>) o;
         return Objects.equals(first, pair.first) && Objects.equals(second, pair.second);
     }

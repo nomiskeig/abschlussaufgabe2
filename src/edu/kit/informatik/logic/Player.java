@@ -23,6 +23,9 @@ public enum Player implements Resettable {
      * Player D
      */
     D("D");
+    private static final int AMOUNT_NEW_FIRE_ENGINE = 1;
+
+    private static final int AMOUNT_NEW_REP_POINT = 1;
 
     private static final int INITIAL_REPUTATION_POINTS = 0;
     private static final int INITIAL_AMOUNT_FIRE_ENGINES = 1;
@@ -69,8 +72,8 @@ public enum Player implements Resettable {
      * Removes five reputation points from the player and increases the amount of fireEngines of this player by one.
      */
     public void boughtEngine() {
-        this.reputationPoints -= 5;
-        this.amountOfFireEngines += 1;
+        this.reputationPoints -= FireBreakerGame.REPUTATION_TO_BUY_ENGINE;
+        this.amountOfFireEngines += AMOUNT_NEW_FIRE_ENGINE;
     }
 
     /**
@@ -95,7 +98,7 @@ public enum Player implements Resettable {
      * Adds an reputation point.
      */
     public void addReputationPoint() {
-        this.reputationPoints += 1;
+        this.reputationPoints += AMOUNT_NEW_REP_POINT;
     }
 
     @Override
